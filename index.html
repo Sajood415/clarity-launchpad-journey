@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="onboarding/onboarding.css?v=1">
+<link rel="stylesheet" href="studio-strategy/strategy-flow.css?v=1">
 <link rel="stylesheet" href="studio-text/studio-text.css?v=5">
 <link rel="stylesheet" href="studio-image/studio-image.css?v=4">
 <link rel="stylesheet" href="studio-video/studio-video.css?v=3">
@@ -410,8 +412,11 @@ var CLARITY_SAMPLE_INTELLIGENCE = {
 
 /* ===================== STATE ===================== */
 var appState = {
-  mode: 'home',
+  mode: 'onboarding',
   cpOverlayOpen: false,
+  onboarding: { step: 1, authMode: 'signup' },
+  business: { name: '', description: '', type: null },
+  strategy: { priorities: [], goal: '', positioning: '' },
   createBrief: {
     goal: 'Drive weekend pre-orders',
     message: 'Sourdough Saturday is back — 72-hour cold ferment, stone-baked, limited batch. Craft over convenience.',
@@ -448,6 +453,9 @@ function setMode(mode) {
   if (mode === 'wizard') appState.screen = 'create-flow';
   else if (mode === 'library') appState.screen = 'library';
   else if (mode === 'campaign') appState.screen = 'campaign';
+  else if (mode === 'onboarding') appState.screen = 'onboarding';
+  else if (mode === 'strategic-plan') appState.screen = 'strategic-plan';
+  else if (mode === 'persona-studio') appState.screen = 'persona-studio';
   else appState.screen = 'home';
   renderApp();
 }
@@ -550,10 +558,80 @@ function screenHome() {
     + '</div>';
 }
 
+/* ===================== PERSONA STUDIO PLACEHOLDER ===================== */
+function screenPersonaStudio() {
+  var biz = appState.business || {};
+  var s   = appState.strategy || {};
+  var bizName = (biz.name && biz.name.trim()) ? biz.name.trim() : 'Your Business';
+
+  var typeLabels = {
+    food: 'Food & Hospitality', retail: 'Retail & Products',
+    creative: 'Creative & Services', tech: 'Tech & Software',
+    trades: 'Trades & Local', other: 'Other'
+  };
+  var typeLabel = biz.type ? (typeLabels[biz.type] || 'General') : 'General';
+
+  var topPriority = (s.priorities && s.priorities.length > 0) ? s.priorities[0] : null;
+  var priorityLabels = {
+    customers: 'Get more customers', launch: 'Launch a new product',
+    online: 'Get found online', community: 'Build a loyal community',
+    repeat: 'Increase repeat orders', idea: 'Test a new idea'
+  };
+
+  var topbar = '<div class="app-topbar">'
+    + '<span class="app-topbar-brand">Clarity</span>'
+    + '<button class="app-topbar-back" onclick="setMode(\'home\')">&#8592; Back to home</button>'
+    + '</div>';
+
+  var body = '<div class="ps-body">'
+    + '<div class="ps-badge"><span class="ps-badge-dot"></span>Coming next</div>'
+    + '<div class="ps-title">Persona Studio</div>'
+    + '<p class="ps-sub">Clarity will build a detailed audience persona for ' + bizName + ' — who they are, what they care about, and what drives them to buy. This powers everything from messaging to content timing.</p>'
+    + '<div class="ps-preview-cards">'
+    + '<div class="ps-preview-card">'
+    + '<div class="ps-preview-label">Business</div>'
+    + '<div class="ps-preview-val">' + bizName + '</div>'
+    + '<div class="ps-preview-sub">' + typeLabel + '</div>'
+    + '</div>'
+    + '<div class="ps-preview-card">'
+    + '<div class="ps-preview-label">Top Priority</div>'
+    + '<div class="ps-preview-val">' + (topPriority ? priorityLabels[topPriority] : 'Not set') + '</div>'
+    + '<div class="ps-preview-sub">' + ((s.priorities && s.priorities.length > 1) ? '+' + (s.priorities.length - 1) + ' more goal' + (s.priorities.length > 2 ? 's' : '') : 'Primary goal') + '</div>'
+    + '</div>'
+    + '<div class="ps-preview-card">'
+    + '<div class="ps-preview-label">Audience Persona</div>'
+    + '<div class="ps-preview-val">Building&hellip;</div>'
+    + '<div class="ps-preview-sub">Demographics, motivations, triggers</div>'
+    + '</div>'
+    + '</div>'
+    + '<div class="ps-actions">'
+    + '<button class="btn btn-primary" onclick="setMode(\'wizard\')">Create first piece of content</button>'
+    + '<button class="btn btn-outline" onclick="setMode(\'home\')">Go to home</button>'
+    + '</div>'
+    + '</div>';
+
+  return '<div class="ps-wrap">' + topbar + body + '</div>';
+}
+
 /* ===================== RENDER DISPATCHER ===================== */
 function renderApp() {
   var el = document.getElementById('content');
   var mode = appState.mode;
+
+  if (mode === 'onboarding') {
+    el.innerHTML = window.screenOnboarding ? window.screenOnboarding() : '';
+    return;
+  }
+
+  if (mode === 'strategic-plan') {
+    el.innerHTML = window.screenStrategyFlow ? window.screenStrategyFlow() : '';
+    return;
+  }
+
+  if (mode === 'persona-studio') {
+    el.innerHTML = screenPersonaStudio();
+    return;
+  }
 
   if (mode === 'home') {
     el.innerHTML = screenHome();
@@ -606,19 +684,24 @@ function init() {
   if (clarityGetIntelMode() === 'off') {
     appState.intelligence = null;
   }
-  /* Always boot to home — no hash routing in v3 */
-  appState.mode = 'home';
+  /* Always boot to onboarding Screen 1 on fresh load */
+  appState.mode = 'onboarding';
+  appState.onboarding = { step: 1, authMode: 'signup' };
+  appState.strategyFlow = { step: 1 };
+  appState.strategy = { priorities: [], goal: '', positioning: '' };
   renderApp();
 }
 window.addEventListener('load', init);
 
 </script>
+<script src="onboarding/onboarding.js?v=1"></script>
+<script src="studio-strategy/strategy-flow.js?v=1"></script>
 <script src="studio-create/create-flow.js?v=11"></script>
 <script src="studio-campaign/campaign-flow.js?v=11"></script>
 <script src="studio-text/studio-text.js?v=8"></script>
 <script src="studio-image/studio-image.js?v=7"></script>
 <script src="studio-video/studio-video.js?v=5"></script>
-<script>CreateFlow.init(appState); CampaignFlow.init(appState); StudioText.init(appState); StudioImage.init(appState); StudioVideo.init(appState);</script>
+<script>OnboardingFlow.init(appState); StrategyFlow.init(appState); CreateFlow.init(appState); CampaignFlow.init(appState); StudioText.init(appState); StudioImage.init(appState); StudioVideo.init(appState);</script>
 
 <!-- Clarity Content Studio — Text, Image, Video, Audio -->
 

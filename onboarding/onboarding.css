@@ -1,0 +1,776 @@
+/* ============================================================
+   ONBOARDING FLOW  —  prefix: ob-
+   ============================================================ */
+
+@keyframes ob-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Full-screen wrapper */
+.ob-screen {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 64px;
+  animation: ob-enter 0.32s cubic-bezier(.22,.68,0,1.2) both;
+}
+
+/* ---- Welcome-specific background treatment ---- */
+.ob-welcome-screen {
+  position: relative;
+  justify-content: space-between;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+/* Subtle radial glow from the top — indigo tint, very low opacity */
+.ob-welcome-screen::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse at center top, rgba(99,102,241,0.11) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Second, subtler glow at the bottom to break the flatness */
+.ob-welcome-screen::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  right: -100px;
+  width: 500px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(52,211,153,0.04) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ob-welcome-main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px 32px;
+  width: 100%;
+}
+
+/* ============================================================
+   SCREEN 1 — WELCOME
+   ============================================================ */
+.ob-welcome-wrap {
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+}
+
+.ob-wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 62px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.ob-wordmark em {
+  color: var(--primary);
+  font-style: normal;
+}
+
+.ob-tagline {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 36px;
+  letter-spacing: -0.005em;
+}
+
+.ob-welcome-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Feature bullets — horizontal row between tagline and CTA */
+.ob-feature-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.ob-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.ob-feature-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--primary);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.ob-feature-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Trust footer — pinned at bottom of welcome screen */
+.ob-trust-footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 20px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(38,44,64,0.6);
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.65;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   SCREEN 2 — AUTH  (two-column layout)
+   ============================================================ */
+
+/* Full-viewport auth wrapper */
+.ob-auth-screen {
+  min-height: 100vh;
+  background: var(--bg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  animation: ob-enter 0.32s cubic-bezier(.22,.68,0,1.2) both;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left brand panel */
+.ob-auth-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 56px 64px 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top-left glow on left panel */
+.ob-auth-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(ellipse at top left, rgba(99,102,241,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.ob-auth-panel-wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.015em;
+  margin-bottom: 40px;
+}
+
+.ob-auth-panel-wordmark em {
+  color: var(--primary);
+  font-style: normal;
+}
+
+.ob-auth-panel-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.ob-auth-panel-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 320px;
+  margin-bottom: 40px;
+}
+
+.ob-auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ob-auth-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ob-auth-feature-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--primary-dim);
+  border: 1px solid rgba(99,102,241,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-hover);
+  flex-shrink: 0;
+}
+
+.ob-auth-feature-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.ob-auth-feature-text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Vertical divider between panels */
+.ob-auth-panel::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+}
+
+/* Right side: centers the form card */
+.ob-auth-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 48px 48px 56px;
+}
+
+/* ============================================================
+   SCREENS 2 & 4 — AUTH + CONFIRM CARD
+   ============================================================ */
+.ob-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 40px 40px 36px;
+  max-width: 420px;
+  width: 100%;
+  /* Elevated surface feel */
+  box-shadow: 0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18);
+}
+
+/* Clarity mark at the top of the auth card */
+.ob-card-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+/* Auth screen back + switch-link wrapper */
+.ob-auth-chrome {
+  width: 100%;
+  max-width: 420px;
+}
+
+.ob-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.ob-card-sub {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 28px;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   FORM FIELDS
+   ============================================================ */
+.ob-field {
+  margin-bottom: 16px;
+}
+
+.ob-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.ob-field input,
+.ob-field textarea {
+  width: 100%;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  resize: none;
+  line-height: 1.5;
+}
+
+.ob-field input:focus,
+.ob-field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.ob-field input::placeholder,
+.ob-field textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* Or divider */
+.ob-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.ob-divider::before,
+.ob-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Google SSO button */
+.ob-btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  margin-bottom: 4px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ob-btn-google:hover {
+  border-color: rgba(99,102,241,0.45);
+  background: var(--primary-dim);
+}
+
+/* Primary full-width button */
+.ob-btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 6px;
+}
+
+.ob-btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.ob-btn-primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Switch auth link */
+.ob-switch-link {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ob-switch-link a {
+  color: var(--primary-hover);
+  cursor: pointer;
+}
+
+.ob-switch-link a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ============================================================
+   SCREEN 3 — BUSINESS SETUP
+   ============================================================ */
+.ob-setup-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 40px 40px 36px;
+  max-width: 560px;
+  width: 100%;
+}
+
+.ob-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+
+/* Business type card grid */
+.ob-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.ob-type-tile {
+  position: relative;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ob-type-tile:hover {
+  border-color: rgba(99,102,241,0.45);
+  transform: translateY(-1px);
+}
+
+.ob-type-tile.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+  background: var(--card);
+}
+
+.ob-type-check {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.ob-type-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  flex-shrink: 0;
+  margin-bottom: 4px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ob-type-tile.selected .ob-type-icon {
+  background: var(--primary-dim);
+  border-color: rgba(99,102,241,0.4);
+  color: var(--primary-hover);
+}
+
+.ob-type-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.ob-type-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   SCREEN 4 — CONFIRMATION
+   ============================================================ */
+.ob-confirm-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+}
+
+.ob-confirm-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.ob-confirm-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+/* ============================================================
+   SHARED CHROME
+   ============================================================ */
+
+/* Progress indicator dots */
+.ob-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 32px;
+}
+
+.ob-prog-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  transition: all 0.2s ease;
+}
+
+.ob-prog-dot.active {
+  background: var(--primary);
+  width: 22px;
+}
+
+.ob-prog-dot.done {
+  background: var(--accent);
+}
+
+/* Back button */
+.ob-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  margin-bottom: 24px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.15s;
+}
+
+.ob-back:hover { color: var(--text); }
+
+/* ============================================================
+   STRATEGIC PLAN PLACEHOLDER
+   ============================================================ */
+.ob-sp-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.ob-sp-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 32px 80px;
+  text-align: center;
+  animation: ob-enter 0.4s cubic-bezier(.22,.68,0,1.2) both;
+}
+
+.ob-sp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: var(--primary-dim);
+  border: 1px solid rgba(99,102,241,0.3);
+  color: var(--primary-hover);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 22px;
+  letter-spacing: 0.04em;
+}
+
+.ob-sp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-hover);
+  animation: ob-sp-pulse 2s ease infinite;
+}
+
+@keyframes ob-sp-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.ob-sp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.ob-sp-sub {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 460px;
+  margin: 0 auto 40px;
+}
+
+.ob-sp-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 660px;
+  width: 100%;
+  animation: ob-enter 0.4s 0.12s cubic-bezier(.22,.68,0,1.2) both;
+}
+
+.ob-sp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  text-align: left;
+  border-top: 2px solid var(--primary);
+}
+
+.ob-sp-card-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.ob-sp-card-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.35;
+}
+
+.ob-sp-card-sub {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.ob-sp-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 36px;
+}
+
+/* ============================================================
+   RESPONSIVE — collapse auth two-column on narrow viewports
+   ============================================================ */
+@media (max-width: 860px) {
+  .ob-auth-screen {
+    grid-template-columns: 1fr;
+  }
+  .ob-auth-panel {
+    display: none;
+  }
+  .ob-auth-right {
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+}
