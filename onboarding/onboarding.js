@@ -453,13 +453,18 @@ window.obSwitchAuth = function (mode) {
 
 /* Screen 2 → Screen 3 (Google button or Continue) */
 window.obAdvanceFromAuth = function () {
-  appState.onboarding.step = 3;
-  appState.onboarding.subStep = 1;
+  /* Show the same "Building your workspace..." loader used after Screen 4 */
+  appState.onboarding.step = 'launching';
   renderContent();
   setTimeout(function () {
-    var el = document.getElementById('ob-biz-name');
-    if (el) el.focus();
-  }, 80);
+    appState.onboarding.step    = 3;
+    appState.onboarding.subStep = 1;
+    renderContent();
+    setTimeout(function () {
+      var el = document.getElementById('ob-biz-name');
+      if (el) el.focus();
+    }, 80);
+  }, 1500);
 };
 
 /* Enable/disable Continue on auth (no full re-render) */
