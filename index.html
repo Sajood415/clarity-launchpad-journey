@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="onboarding/onboarding.css?v=3">
-<link rel="stylesheet" href="studio-strategy/strategy-flow.css?v=3">
+<link rel="stylesheet" href="onboarding/onboarding.css?v=5">
+<link rel="stylesheet" href="studio-strategy/strategy-flow.css?v=4">
 <link rel="stylesheet" href="studio-persona/persona-flow.css?v=3">
 <link rel="stylesheet" href="studio-text/studio-text.css?v=6">
 <link rel="stylesheet" href="studio-image/studio-image.css?v=4">
@@ -55,6 +55,81 @@ a { text-decoration: none; color: inherit; }
   --ob-coral-rim: rgba(224,123,106,0.28);
   --ob-muted:     #9a8f82;
   --ob-text:      #e8e0d5;
+}
+
+/* ============================================================
+   LIGHT THEME OVERRIDES
+   ============================================================ */
+[data-theme="light"] {
+  --bg:           #f5f0e8;
+  --card:         #fdf8f2;
+  --card2:        #ffffff;
+  --text:         #1a1612;
+  --muted:        #6b6056;
+  --border:       rgba(0,0,0,0.08);
+  --primary:      #b8893a;
+  --primary-hover:#a07830;
+  --primary-dim:  rgba(184,137,58,0.12);
+  --accent:       #1fa899;
+  --warning:      #d97706;
+  --ob-bg:        #f5f0e8;
+  --ob-surface:   #fdf8f2;
+  --ob-surface2:  #ffffff;
+  --ob-border:    rgba(0,0,0,0.08);
+  --ob-gold:      #b8893a;
+  --ob-gold-dim:  rgba(184,137,58,0.10);
+  --ob-gold-rim:  rgba(184,137,58,0.30);
+  --ob-teal:      #1fa899;
+  --ob-teal-dim:  rgba(31,168,153,0.10);
+  --ob-teal-rim:  rgba(31,168,153,0.28);
+  --ob-coral:     #c85f4a;
+  --ob-coral-dim: rgba(200,95,74,0.10);
+  --ob-coral-rim: rgba(200,95,74,0.28);
+  --ob-muted:     #6b6056;
+  --ob-text:      #1a1612;
+}
+
+/* Text contrast on amber buttons in light mode */
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .ob-btn-gold,
+[data-theme="light"] .sp-btn-save {
+  color: #1a1612;
+}
+
+/* Toggle switch track — visible in both modes */
+[data-theme="light"] .toggle-sw {
+  background: rgba(0,0,0,0.14);
+}
+
+/* Library hover border visible in light mode */
+[data-theme="light"] .lib-btn-rerun:hover,
+[data-theme="light"] .lib-btn-run-now:hover {
+  border-color: rgba(0,0,0,0.2);
+}
+
+/* ============================================================
+   THEME TOGGLE BUTTON (fixed overlay)
+   ============================================================ */
+.theme-toggle-fixed {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 9999;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.theme-toggle-fixed:hover {
+  color: var(--text);
+  border-color: var(--primary);
 }
 
 /* Shell — no sidebar, full screen */
@@ -717,6 +792,7 @@ a { text-decoration: none; color: inherit; }
 <div id="app">
   <div id="content"></div>
 </div>
+<button id="theme-toggle-btn" class="theme-toggle-fixed" onclick="clarityToggleTheme()" title="Switch to light mode"></button>
 
 <script>
 /* ===================== SHARED INTELLIGENCE DATA ===================== */
@@ -1159,8 +1235,38 @@ function renderApp() {
 /* renderContent() alias — module files call this directly to trigger re-renders */
 window.renderContent = renderApp;
 
+/* ===================== THEME TOGGLE ===================== */
+var _THEME_MOON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+var _THEME_SUN  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
+function _updateThemeIcon() {
+  var btn = document.getElementById('theme-toggle-btn');
+  if (!btn) return;
+  var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  btn.innerHTML = isLight ? _THEME_MOON : _THEME_SUN;
+  btn.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+}
+
+window.clarityToggleTheme = function() {
+  var html = document.documentElement;
+  if (html.getAttribute('data-theme') === 'light') {
+    html.removeAttribute('data-theme');
+    localStorage.setItem('clarity_theme', 'dark');
+  } else {
+    html.setAttribute('data-theme', 'light');
+    localStorage.setItem('clarity_theme', 'light');
+  }
+  _updateThemeIcon();
+};
+
 /* ===================== INIT ===================== */
 function init() {
+  /* Apply saved theme before first render to avoid flash */
+  if (localStorage.getItem('clarity_theme') === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+  _updateThemeIcon();
+
   /* Restore intelligence toggle from localStorage */
   if (clarityGetIntelMode() === 'off') {
     appState.intelligence = null;
@@ -1168,7 +1274,7 @@ function init() {
   /* Always boot to onboarding Screen 1 on fresh load */
   appState.mode = 'onboarding';
   appState.onboarding = { step: 1, authMode: 'signup', subStep: 1 };
-  appState.business   = { name: '', description: '', type: null };
+  appState.business   = { name: '', description: '', type: null, locations: [] };
   appState.strategyFlow = { screen: 'hub', marketScan: { step: 1, focus: '' }, customerIntel: { step: 1, focus: '' }, competition: { step: 1, focus: '' } };
   appState.strategy     = { marketScan: null, customerIntelligence: null, competition: null };
   appState.personaFlow  = { step: 1 };
@@ -1178,8 +1284,8 @@ function init() {
 window.addEventListener('load', init);
 
 </script>
-<script src="onboarding/onboarding.js?v=3"></script>
-<script src="studio-strategy/strategy-flow.js?v=7"></script>
+<script src="onboarding/onboarding.js?v=4"></script>
+<script src="studio-strategy/strategy-flow.js?v=8"></script>
 <script src="studio-persona/persona-flow.js?v=2"></script>
 <script src="studio-create/create-flow.js?v=13"></script>
 <script src="studio-campaign/campaign-flow.js?v=13"></script>

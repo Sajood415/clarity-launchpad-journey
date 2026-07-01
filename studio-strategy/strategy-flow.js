@@ -105,11 +105,16 @@ var StrategyFlow = (function () {
     var bizName  = (biz.name && biz.name.trim()) ? biz.name.trim() : '\u2014';
     var bizDesc  = (biz.description && biz.description.trim()) ? biz.description.trim() : '\u2014';
     var focusVal = (opts.focusVal || '').replace(/"/g, '&quot;');
+    var locs     = biz.locations || [];
+    var locLabel = locs.length
+      ? (locs[0] === 'Global' ? 'Global / Worldwide' : locs.join(', '))
+      : '\u2014';
 
     var contextCard = '<div class="ms-context-card">'
       + '<div class="ms-context-label">Your business context</div>'
       + '<div class="ms-context-row"><span class="ms-context-key">Business</span><span class="ms-context-val">' + bizName + '</span></div>'
       + '<div class="ms-context-row"><span class="ms-context-key">Category</span><span class="ms-context-val">' + typeName + '</span></div>'
+      + '<div class="ms-context-row"><span class="ms-context-key">Location</span><span class="ms-context-val">' + locLabel + '</span></div>'
       + '<div class="ms-context-row border-0"><span class="ms-context-key">About</span><span class="ms-context-val">' + bizDesc + '</span></div>'
       + '</div>';
 

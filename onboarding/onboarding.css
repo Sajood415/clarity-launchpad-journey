@@ -506,9 +506,11 @@
   margin-bottom: 32px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   opacity: 0.85;
   letter-spacing: -0.01em;
+  text-align: center;
 }
 
 .ob-conv-ref-multi {
@@ -521,15 +523,16 @@
   font-size: 11px;
 }
 
-/* The main centered question */
+/* The main centered question — dominant heading, not a label */
 .ob-conv-question {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 38px;
+  font-size: 44px;
   font-weight: 600;
   color: var(--ob-text);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  margin-bottom: 28px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 36px;
+  text-align: center;
 }
 
 /* Small helper text below the question */
@@ -540,60 +543,62 @@
   opacity: 0.75;
 }
 
-/* Large single text input */
+/* Large single text input — underline only, types into the page */
 .ob-conv-input {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid var(--ob-border);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
   border-radius: 0;
   padding: 14px 0;
   color: var(--ob-text);
   font-size: 22px;
   font-family: 'DM Sans', sans-serif;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.25s;
   caret-color: var(--ob-gold);
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .ob-conv-input:focus {
-  border-bottom-color: var(--ob-gold);
+  border-bottom-color: rgba(212,168,83,0.6);
 }
 
 .ob-conv-input::placeholder {
   color: var(--ob-muted);
-  opacity: 0.45;
+  opacity: 0.4;
   font-size: 20px;
+  text-align: center;
 }
 
-/* Multi-line textarea */
+/* Multi-line textarea — underline only, no box feel */
 .ob-conv-textarea {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid var(--ob-border);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
   border-radius: 0;
   padding: 14px 0;
   color: var(--ob-text);
   font-size: 18px;
   font-family: 'DM Sans', sans-serif;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.25s;
   resize: none;
-  line-height: 1.6;
+  line-height: 1.7;
   caret-color: var(--ob-gold);
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   min-height: 90px;
 }
 
 .ob-conv-textarea:focus {
-  border-bottom-color: var(--ob-gold);
+  border-bottom-color: rgba(212,168,83,0.6);
 }
 
 .ob-conv-textarea::placeholder {
   color: var(--ob-muted);
-  opacity: 0.45;
+  opacity: 0.4;
   font-size: 16px;
 }
 
@@ -612,7 +617,7 @@
   cursor: pointer;
   transition: background 0.15s, transform 0.12s, opacity 0.15s;
   font-family: 'DM Sans', sans-serif;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .ob-conv-btn:hover:not(:disabled) {
@@ -632,6 +637,135 @@
   color: var(--ob-muted);
   margin-bottom: 22px;
   opacity: 0.65;
+}
+
+/* ============================================================
+   SCREEN 3d — LOCATION PICKER
+   ============================================================ */
+
+/* Amber chips showing selected countries */
+.ob-loc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+  min-height: 0;
+  justify-content: center;
+}
+
+.ob-loc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 4px 12px;
+  border-radius: 20px;
+  background: rgba(212,168,83,0.12);
+  border: 1px solid rgba(212,168,83,0.28);
+  color: var(--ob-gold);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.ob-loc-chip button {
+  background: none;
+  border: none;
+  color: var(--ob-gold);
+  cursor: pointer;
+  font-size: 15px;
+  padding: 0 2px;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.12s;
+}
+
+.ob-loc-chip button:hover { opacity: 1; }
+
+/* "Global / Worldwide" pinned row — separated from the scrollable list */
+.ob-loc-global-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ob-text);
+  border-bottom: 1px solid var(--ob-border);
+  margin-bottom: 4px;
+  transition: background 0.12s;
+  user-select: none;
+}
+
+.ob-loc-global-row:hover    { background: rgba(255,255,255,0.04); }
+.ob-loc-global-row.selected { background: rgba(212,168,83,0.07); }
+
+/* Search input */
+.ob-loc-search {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  padding: 10px 0;
+  color: var(--ob-text);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  caret-color: var(--ob-gold);
+  margin-bottom: 4px;
+}
+
+.ob-loc-search:focus { border-bottom-color: rgba(212,168,83,0.4); }
+
+.ob-loc-search::placeholder {
+  color: var(--ob-muted);
+  opacity: 0.5;
+  font-size: 13px;
+}
+
+/* Scrollable country list */
+.ob-loc-list {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 28px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212,168,83,0.2) transparent;
+}
+
+.ob-loc-list::-webkit-scrollbar { width: 4px; }
+.ob-loc-list::-webkit-scrollbar-track { background: transparent; }
+.ob-loc-list::-webkit-scrollbar-thumb { background: rgba(212,168,83,0.2); border-radius: 2px; }
+
+/* Country row */
+.ob-loc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ob-text);
+  transition: background 0.12s;
+  user-select: none;
+}
+
+.ob-loc-item:hover    { background: rgba(255,255,255,0.04); }
+.ob-loc-item.selected { background: rgba(212,168,83,0.07); }
+.ob-loc-item.ob-loc-hidden { display: none; }
+
+.ob-loc-flag { font-size: 17px; line-height: 1; flex-shrink: 0; }
+.ob-loc-name { flex: 1; }
+.ob-loc-check { color: var(--ob-gold); font-size: 13px; font-weight: 700; flex-shrink: 0; }
+
+/* Confirmation screen location line */
+.ob-confirm-location {
+  font-size: 13px;
+  color: var(--ob-gold);
+  opacity: 0.85;
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
 }
 
 /* ============================================================
@@ -859,9 +993,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .ob-conv-question {
-    font-size: 28px;
+    font-size: 32px;
   }
   .ob-conv-input {
-    font-size: 18px;
+    font-size: 19px;
+    text-align: center;
   }
 }

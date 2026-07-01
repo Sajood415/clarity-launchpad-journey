@@ -1395,3 +1395,75 @@
 
   strong[style] { /* keep color hints but ensure readability */ }
 }
+
+/* ============================================================
+   LIGHT THEME OVERRIDES
+   ============================================================ */
+
+/* Positioning map — invert the dark-only rgba values */
+[data-theme="light"] .comp-map-field {
+  background: rgba(0,0,0,0.03);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 50% 50%;
+  border-color: var(--ob-border);
+}
+
+[data-theme="light"] .comp-map-hline,
+[data-theme="light"] .comp-map-vline {
+  background: rgba(0,0,0,0.10);
+}
+
+[data-theme="light"] .comp-dot-grey { background: #888; }
+[data-theme="light"] .comp-you-ring { border-color: var(--ob-gold); }
+
+/* Report section cards — ensure surface reads against cream bg */
+[data-theme="light"] .ms-section-card,
+[data-theme="light"] .comp-player-card,
+[data-theme="light"] .ci-journey-step-inner {
+  background: var(--ob-surface2);
+  border-color: var(--ob-border);
+}
+
+/* Progress bar track */
+[data-theme="light"] .ms-progress-track {
+  background: rgba(0,0,0,0.08);
+}
+
+/* Confidence chips */
+[data-theme="light"] .ms-confidence-chip {
+  background: rgba(31,168,153,0.10);
+  color: var(--ob-teal);
+  border-color: var(--ob-teal-rim);
+}
+
+/* Stat / trigger chips */
+[data-theme="light"] .ci-stat-chip,
+[data-theme="light"] .ci-trigger-chip {
+  background: var(--ob-surface2);
+  color: var(--ob-text);
+  border-color: var(--ob-border);
+}
+
+/* WTP bar track */
+[data-theme="light"] .ci-wtp-track {
+  background: rgba(0,0,0,0.08);
+}
+
+/* Hub module cards */
+[data-theme="light"] .sp-module-card {
+  background: var(--ob-surface);
+}
+
+/* Context screen card */
+[data-theme="light"] .ms-context-card {
+  background: var(--ob-surface2);
+}
+
+/* Eyebrow labels inherit correct accent via CSS vars — no override needed */
+
+/* Hub "locked" overlay */
+[data-theme="light"] .sp-module-locked {
+  background: rgba(245,240,232,0.7);
+}

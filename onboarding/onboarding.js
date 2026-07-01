@@ -52,6 +52,60 @@ var OnboardingFlow = (function () {
       + '</svg>'
   };
 
+  /* Country list for sub-step 3d */
+  var OB_COUNTRIES = [
+    { name: 'Australia',      flag: '🇦🇺' },
+    { name: 'Austria',        flag: '🇦🇹' },
+    { name: 'Bangladesh',     flag: '🇧🇩' },
+    { name: 'Belgium',        flag: '🇧🇪' },
+    { name: 'Brazil',         flag: '🇧🇷' },
+    { name: 'Canada',         flag: '🇨🇦' },
+    { name: 'China',          flag: '🇨🇳' },
+    { name: 'Denmark',        flag: '🇩🇰' },
+    { name: 'Egypt',          flag: '🇪🇬' },
+    { name: 'Finland',        flag: '🇫🇮' },
+    { name: 'France',         flag: '🇫🇷' },
+    { name: 'Germany',        flag: '🇩🇪' },
+    { name: 'Ghana',          flag: '🇬🇭' },
+    { name: 'Hong Kong',      flag: '🇭🇰' },
+    { name: 'India',          flag: '🇮🇳' },
+    { name: 'Indonesia',      flag: '🇮🇩' },
+    { name: 'Ireland',        flag: '🇮🇪' },
+    { name: 'Israel',         flag: '🇮🇱' },
+    { name: 'Italy',          flag: '🇮🇹' },
+    { name: 'Japan',          flag: '🇯🇵' },
+    { name: 'Jordan',         flag: '🇯🇴' },
+    { name: 'Kenya',          flag: '🇰🇪' },
+    { name: 'Malaysia',       flag: '🇲🇾' },
+    { name: 'Mexico',         flag: '🇲🇽' },
+    { name: 'Morocco',        flag: '🇲🇦' },
+    { name: 'Netherlands',    flag: '🇳🇱' },
+    { name: 'New Zealand',    flag: '🇳🇿' },
+    { name: 'Nigeria',        flag: '🇳🇬' },
+    { name: 'Norway',         flag: '🇳🇴' },
+    { name: 'Pakistan',       flag: '🇵🇰' },
+    { name: 'Philippines',    flag: '🇵🇭' },
+    { name: 'Poland',         flag: '🇵🇱' },
+    { name: 'Portugal',       flag: '🇵🇹' },
+    { name: 'Qatar',          flag: '🇶🇦' },
+    { name: 'Saudi Arabia',   flag: '🇸🇦' },
+    { name: 'Singapore',      flag: '🇸🇬' },
+    { name: 'South Africa',   flag: '🇿🇦' },
+    { name: 'South Korea',    flag: '🇰🇷' },
+    { name: 'Spain',          flag: '🇪🇸' },
+    { name: 'Sri Lanka',      flag: '🇱🇰' },
+    { name: 'Sweden',         flag: '🇸🇪' },
+    { name: 'Switzerland',    flag: '🇨🇭' },
+    { name: 'Taiwan',         flag: '🇹🇼' },
+    { name: 'Thailand',       flag: '🇹🇭' },
+    { name: 'Turkey',         flag: '🇹🇷' },
+    { name: 'UAE',            flag: '🇦🇪' },
+    { name: 'United Kingdom', flag: '🇬🇧' },
+    { name: 'United States',  flag: '🇺🇸' },
+    { name: 'Vietnam',        flag: '🇻🇳' },
+    { name: 'Other',          flag: '🌐' }
+  ];
+
   /* ---- init ---- */
   function init(s) {
     state = s;
@@ -59,7 +113,9 @@ var OnboardingFlow = (function () {
       state.onboarding = { step: 1, authMode: 'signup', subStep: 1 };
     }
     if (!state.business) {
-      state.business = { name: '', description: '', type: null };
+      state.business = { name: '', description: '', type: null, locations: [] };
+    } else if (!state.business.locations) {
+      state.business.locations = [];
     }
   }
 
@@ -230,10 +286,65 @@ var OnboardingFlow = (function () {
       + '</div>';
   }
 
+  /* Sub-step 3d — Location picker */
+  function screenSetupLocation() {
+    var locs     = (state.business && state.business.locations) || [];
+    var name     = (state.business && state.business.name) ? state.business.name.trim() : '';
+    var type     = (state.business && state.business.type) || '';
+    var typeLabels = { food: 'Food & Hospitality', retail: 'Retail & Products', creative: 'Creative & Services', tech: 'Tech & Software', trades: 'Trades & Local', other: 'Other' };
+    var typeLabel  = typeLabels[type] || '';
+
+    var refParts = [];
+    if (name)      refParts.push('<span>' + escHtml(name) + '</span>');
+    if (typeLabel) refParts.push('<span>' + escHtml(typeLabel) + '</span>');
+    var refLine = refParts.length
+      ? '<div class="ob-conv-ref ob-conv-ref-multi">' + refParts.join('<span class="ob-conv-ref-sep">&#8594;</span>') + '</div>'
+      : '';
+
+    var isGlobal = locs.indexOf('Global') > -1;
+    var hasSelection = locs.length > 0;
+
+    /* Selected chips */
+    var chipsHtml = '<div class="ob-loc-chips" id="ob-location-chips">'
+      + locs.map(function (l) {
+          return '<span class="ob-loc-chip">' + escHtml(l)
+            + '<button type="button" onclick="obRemoveLocation(\'' + l.replace(/'/g, "\\'") + '\')">&#215;</button></span>';
+        }).join('')
+      + '</div>';
+
+    /* Country rows */
+    var rowsHtml = OB_COUNTRIES.map(function (c) {
+      var sel = locs.indexOf(c.name) > -1;
+      return '<div class="ob-loc-item' + (sel ? ' selected' : '') + '" data-loc="' + c.name.toLowerCase() + '" onclick="obToggleLocation(\'' + c.name.replace(/'/g, "\\'") + '\')">'
+        + '<span class="ob-loc-flag">' + c.flag + '</span>'
+        + '<span class="ob-loc-name">' + c.name + '</span>'
+        + (sel ? '<span class="ob-loc-check">&#10003;</span>' : '')
+        + '</div>';
+    }).join('');
+
+    return '<div class="ob-conv-screen">'
+      + '<button class="ob-back" onclick="obBackToType()">&#8592; Back</button>'
+      + progressDots(3)
+      + '<div class="ob-conv-wrap">'
+      + refLine
+      + '<div class="ob-conv-question">Where do you operate?</div>'
+      + chipsHtml
+      + '<div class="ob-loc-global-row ob-loc-item' + (isGlobal ? ' selected' : '') + '" onclick="obToggleLocation(\'Global\')">'
+      + '<span class="ob-loc-flag">🌍</span><span class="ob-loc-name">Global / Worldwide</span>'
+      + (isGlobal ? '<span class="ob-loc-check">&#10003;</span>' : '')
+      + '</div>'
+      + '<input type="text" id="ob-location-search" class="ob-loc-search" placeholder="Search countries\u2026" oninput="obLocationSearch(this.value)" autocomplete="off" />'
+      + '<div class="ob-loc-list" id="ob-location-list">' + rowsHtml + '</div>'
+      + '<button class="ob-conv-btn" id="ob-location-btn"' + (hasSelection ? '' : ' disabled') + ' onclick="obAdvanceFromLocation()">Continue &#8594;</button>'
+      + '</div>'
+      + '</div>';
+  }
+
   function screenSetup() {
     var subStep = (state.onboarding && state.onboarding.subStep) || 1;
     if (subStep === 2) return screenSetupDesc();
     if (subStep === 3) return screenSetupType();
+    if (subStep === 4) return screenSetupLocation();
     return screenSetupName();
   }
 
@@ -244,6 +355,12 @@ var OnboardingFlow = (function () {
     var name = (state.business && state.business.name && state.business.name.trim())
       ? state.business.name.trim()
       : 'there';
+    var locs = (state.business && state.business.locations) || [];
+    var locLine = locs.length
+      ? '<div class="ob-confirm-location">'
+        + (locs[0] === 'Global' ? 'Operating globally.' : 'Operating in: ' + locs.join(', ') + '.')
+        + '</div>'
+      : '';
     var checkIcon = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf"'
       + ' stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'
       + '<polyline points="20 6 9 17 4 12"/></svg>';
@@ -253,6 +370,7 @@ var OnboardingFlow = (function () {
       + '<div class="ob-card" style="text-align:center;">'
       + '<div class="ob-confirm-icon">' + checkIcon + '</div>'
       + '<div class="ob-confirm-heading">Welcome, ' + escHtml(name) + '</div>'
+      + locLine
       + '<p class="ob-confirm-sub">We&rsquo;ll use this to shape your strategy and content.'
       + ' Everything Clarity creates will be informed by your business and audience.</p>'
       + '<button class="ob-btn-primary" onclick="obLaunchWorkspace()">Let&rsquo;s get started</button>'
@@ -426,11 +544,14 @@ window.obSelectTypeAndAdvance = function (id) {
     }
   });
 
-  /* Brief pause for the user to see their selection, then advance */
+  /* Brief pause for the user to see their selection, then advance to 3d */
   setTimeout(function () {
-    appState.onboarding.step = 4;
-    appState.onboarding.subStep = 1;
+    appState.onboarding.subStep = 4;
     renderContent();
+    setTimeout(function () {
+      var el = document.getElementById('ob-location-search');
+      if (el) el.focus();
+    }, 80);
   }, 320);
 };
 
@@ -441,6 +562,89 @@ window.obBackToDesc = function () {
     var el = document.getElementById('ob-biz-desc');
     if (el) el.focus();
   }, 80);
+};
+
+window.obBackToType = function () {
+  appState.onboarding.subStep = 3;
+  renderContent();
+};
+
+/* ---- Sub-step 3d handlers ---- */
+
+/* Update chips, list highlights, and Continue button without a full re-render */
+window.obUpdateLocationUI = function () {
+  var locs = appState.business.locations || [];
+
+  /* Chips */
+  var chipsEl = document.getElementById('ob-location-chips');
+  if (chipsEl) {
+    chipsEl.innerHTML = locs.map(function (l) {
+      return '<span class="ob-loc-chip">' + l
+        + '<button type="button" onclick="obRemoveLocation(\'' + l.replace(/'/g, "\\'") + '\')">&#215;</button></span>';
+    }).join('');
+  }
+
+  /* Global row */
+  var globalRow = document.querySelector('.ob-loc-global-row');
+  if (globalRow) {
+    var isGlobal = locs.indexOf('Global') > -1;
+    globalRow.classList.toggle('selected', isGlobal);
+    var gc = globalRow.querySelector('.ob-loc-check');
+    if (isGlobal && !gc) { var s = document.createElement('span'); s.className = 'ob-loc-check'; s.innerHTML = '&#10003;'; globalRow.appendChild(s); }
+    else if (!isGlobal && gc) { gc.remove(); }
+  }
+
+  /* Country rows */
+  var rows = document.querySelectorAll('#ob-location-list .ob-loc-item');
+  rows.forEach(function (row) {
+    var n = (row.querySelector('.ob-loc-name') || {}).textContent || '';
+    var sel = locs.indexOf(n) > -1;
+    row.classList.toggle('selected', sel);
+    var ck = row.querySelector('.ob-loc-check');
+    if (sel && !ck)  { var s = document.createElement('span'); s.className = 'ob-loc-check'; s.innerHTML = '&#10003;'; row.appendChild(s); }
+    else if (!sel && ck) { ck.remove(); }
+  });
+
+  /* Continue button */
+  var btn = document.getElementById('ob-location-btn');
+  if (btn) btn.disabled = locs.length === 0;
+};
+
+window.obToggleLocation = function (name) {
+  if (!appState.business.locations) appState.business.locations = [];
+  var locs = appState.business.locations;
+  if (name === 'Global') {
+    appState.business.locations = locs.indexOf('Global') > -1 ? [] : ['Global'];
+  } else {
+    var gi = locs.indexOf('Global');
+    if (gi > -1) locs.splice(gi, 1);
+    var i = locs.indexOf(name);
+    if (i > -1) locs.splice(i, 1); else locs.push(name);
+  }
+  window.obUpdateLocationUI();
+};
+
+window.obRemoveLocation = function (name) {
+  if (!appState.business.locations) return;
+  var i = appState.business.locations.indexOf(name);
+  if (i > -1) appState.business.locations.splice(i, 1);
+  window.obUpdateLocationUI();
+};
+
+window.obLocationSearch = function (val) {
+  var q = val.toLowerCase().trim();
+  var rows = document.querySelectorAll('#ob-location-list .ob-loc-item');
+  rows.forEach(function (row) {
+    var n = ((row.querySelector('.ob-loc-name') || {}).textContent || '').toLowerCase();
+    row.classList.toggle('ob-loc-hidden', q !== '' && n.indexOf(q) === -1);
+  });
+};
+
+window.obAdvanceFromLocation = function () {
+  if (!appState.business.locations || !appState.business.locations.length) return;
+  appState.onboarding.step = 4;
+  appState.onboarding.subStep = 1;
+  renderContent();
 };
 
 /* ---- Screen 4 ---- */
