@@ -5,6 +5,11 @@
 var StrategyFlow = (function () {
   var state;
 
+  /* ---- Module accent colors ---- */
+  var MS_COLOR   = '#d4a853';
+  var CI_COLOR   = '#2dd4bf';
+  var COMP_COLOR = '#e07b6a';
+
   function init(s) {
     state = s;
     if (!state.strategyFlow) {
@@ -53,7 +58,7 @@ var StrategyFlow = (function () {
           : '<div class="sp-mod-badge active"><span class="sp-mod-dot"></span>Active</div>';
 
       var clickAttr = (!isLocked && opts.onclick) ? ' onclick="' + opts.onclick + '"' : '';
-      var cls = 'sp-module-card' + (isLocked ? ' locked' : '') + (isComplete ? ' complete' : '') + (isActive ? ' active' : '');
+      var cls = 'sp-module-card' + (opts.slug ? ' ' + opts.slug : '') + (isLocked ? ' locked' : '') + (isComplete ? ' complete' : '') + (isActive ? ' active' : '');
       var cta = isLocked ? ''
         : isComplete
           ? '<button class="sp-module-cta outline">View Report</button>'
@@ -71,12 +76,12 @@ var StrategyFlow = (function () {
     var custIcon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>';
     var compIcon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
 
-    var cards = moduleCard({ icon: scanIcon, title: 'Market Scan', status: msStatus, onclick: 'spGoMarketScan()', desc: 'Scan your market for emerging trends, competitive gaps, and opportunity signals grounded in your business context.' })
-      + moduleCard({ icon: custIcon, title: 'Customer Intelligence', status: ciStatus, onclick: 'spGoCustomerIntel()', desc: 'Understand who is buying, what motivates them, and how they make decisions — so your content speaks their language.' })
-      + moduleCard({ icon: compIcon, title: 'Competition', status: compStatus, onclick: 'spGoCompetition()', desc: 'Map your competitive landscape, identify whitespace, and understand how to position against key players.' });
+    var cards = moduleCard({ slug: 'ms',   icon: scanIcon, title: 'Market Scan',          status: msStatus,   onclick: 'spGoMarketScan()',    desc: 'Scan your market for emerging trends, competitive gaps, and opportunity signals grounded in your business context.' })
+      + moduleCard({ slug: 'ci',   icon: custIcon, title: 'Customer Intelligence', status: ciStatus,   onclick: 'spGoCustomerIntel()', desc: 'Understand who is buying, what motivates them, and how they make decisions — so your content speaks their language.' })
+      + moduleCard({ slug: 'comp', icon: compIcon, title: 'Competition',            status: compStatus, onclick: 'spGoCompetition()',    desc: 'Map your competitive landscape, identify whitespace, and understand how to position against key players.' });
 
     var continueBtn = allComplete
-      ? '<div class="sp-hub-continue"><button class="btn btn-primary" onclick="spGoToPersona()">Continue to Persona Studio &#8594;</button></div>'
+      ? '<div class="sp-hub-continue"><button class="btn sp-btn-save" onclick="spGoToPersona()">Continue to Persona Studio &#8594;</button></div>'
       : '';
 
     return '<div class="sp-hub-wrap">'
@@ -157,24 +162,41 @@ var StrategyFlow = (function () {
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var biz    = state.business || {};
     var bizName = (biz.name && biz.name.trim()) ? biz.name.trim() : 'Your Business';
+    var accent = opts.accentColor || MS_COLOR;
 
-    var header = '<div class="ms-report-header">'
-      + '<div class="ms-report-header-left"><div class="ms-report-eyebrow">' + opts.eyebrow + '</div><div class="ms-report-biz">' + bizName + '</div></div>'
-      + '<div class="ms-report-header-right"><div class="ms-report-date">' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear() + '</div>'
+    /* Header — own card within the report column */
+    var pdfBtn = '<button class="ms-pdf-btn" onclick="downloadReportPDF()" title="Download as PDF">'
+      + '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+      + ' Download PDF</button>';
+
+    var header = '<div class="ms-report-header ms-stage-section" style="border-left:3px solid ' + accent + '">'
+      + '<div class="ms-report-header-left"><div class="ms-report-eyebrow" style="color:' + accent + '">' + opts.eyebrow + '</div><div class="ms-report-biz">' + bizName + '</div></div>'
+      + '<div class="ms-report-header-right">' + pdfBtn + '<div class="ms-report-date">' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear() + '</div>'
       + '<div class="ms-report-status-chip">AI Generated &middot; Mock Data</div></div>'
       + '</div>';
 
+    /* Stage progress bar — fills as sections reveal */
+    var progressBar = '<div class="sp-stage-progress"><div class="sp-stage-bar" id="sp-stage-bar" style="background:' + accent + ';width:0%"></div></div>';
+
     var footer = '<div class="cf-footer">'
-      + '<button class="btn btn-outline" onclick="' + opts.rerunAction + '()">&#8635; Re-run</button>'
+      + '<button class="btn btn-outline sp-btn-warm-outline" onclick="' + opts.rerunAction + '()">&#8635; Re-run</button>'
       + '<div class="cf-footer-mid"><span class="cf-eta">' + opts.eyebrow + '</span></div>'
-      + '<button class="btn btn-primary" onclick="' + opts.saveAction + '()">Looks good, save this &#8594;</button>'
+      + '<button class="btn sp-btn-save" onclick="' + opts.saveAction + '()">Looks good, save this &#8594;</button>'
       + '</div>';
 
     return '<div class="cf-screen">'
       + spTopbar('Back to Strategic Planning', 'spGoHub()')
       + '<div class="ms-body ms-report-body"><div class="ms-report-card">'
       + header + opts.sections.join('') + '</div></div>'
+      + progressBar
       + footer + '</div>';
+  }
+
+  /* Highlight key numbers/stats in narrative text with accent color */
+  function hlStat(text, color) {
+    if (!color || !text) return text;
+    return text.replace(/(\$[\d,.]+(?:[MBKT](?:illion)?)?(?:\/(?:month|year|project))?|[\d]+(?:\.\d+)?(?:%|×|x)(?:\s*CAGR)?|[\d]+(?:\.\d+)?–[\d]+(?:\.\d+)?%?|[\d]+(?:\.\d+)?(?:\s*(?:CAGR|ARR|YoY))|[\d]+(?:\s*–\s*[\d]+)?\s*(?:weeks?|months?|years?|times?)\b)/g,
+      function(m) { return '<strong style="color:' + color + ';font-weight:600">' + m + '</strong>'; });
   }
 
   /* ============================================================
@@ -202,14 +224,28 @@ var StrategyFlow = (function () {
   }
 
   function msScreenReport() {
-    var d = msGetReportData();
-    var overview = msSection('Market Overview', '<div class="ms-overview-text">' + d.overview + '</div>');
-    var trend = msSection('Key Trend', '<div class="ms-trend-callout"><div class="ms-trend-icon">' + d.trend.icon + '</div><div class="ms-trend-body"><div class="ms-trend-headline">' + d.trend.headline + '</div><div class="ms-trend-text">' + d.trend.body + '</div></div></div>');
-    var gap   = msSection('Market Gap', '<div class="ms-gap-card"><div class="ms-gap-headline">' + d.gap.headline + '</div><div class="ms-gap-text">' + d.gap.body + '</div></div>');
-    var compCards = d.competitors.map(function (c) { return '<div class="ms-comp-card"><div class="ms-comp-name">' + c.name + '</div><div class="ms-comp-pos">' + c.pos + '</div></div>'; }).join('');
-    var comp  = msSection('Competitive Landscape', '<div class="ms-comp-grid">' + compCards + '</div>');
-    var evid  = msSectionLast('Evidence', buildEvidenceRows(d.evidence));
-    return buildReportScreen({ eyebrow: 'Market Scan Report', sections: [overview, trend, gap, comp, evid], saveAction: 'msSaveReport', rerunAction: 'msRerunScan' });
+    var d  = msGetReportData();
+    var c  = MS_COLOR;
+    var ml = 'Market Scan';
+    var overview = msSection('Market Overview',
+      '<div class="ms-section-card"><div class="ms-overview-text">' + hlStat(d.overview, c) + '</div></div>',
+      c, ml);
+    var trend = msSection('Key Trend',
+      '<div class="ms-trend-callout"><div class="ms-trend-icon">' + d.trend.icon + '</div>'
+      + '<div class="ms-trend-body"><div class="ms-trend-headline">' + d.trend.headline + '</div>'
+      + '<div class="ms-trend-text">' + hlStat(d.trend.body, c) + '</div></div></div>',
+      c, ml);
+    var gap = msSection('Market Gap',
+      '<div class="ms-gap-card"><div class="ms-gap-headline">' + d.gap.headline + '</div>'
+      + '<div class="ms-gap-text">' + d.gap.body + '</div></div>',
+      c, ml);
+    var compCards = d.competitors.map(function (cv) {
+      return '<div class="ms-comp-card"><div class="ms-comp-name">' + cv.name + '</div>'
+        + '<div class="ms-comp-pos">' + cv.pos + '</div></div>';
+    }).join('');
+    var comp = msSection('Competitive Landscape', '<div class="ms-comp-grid">' + compCards + '</div>', c, ml);
+    var evid = msSectionLast('Evidence', buildEvidenceRows(d.evidence), c, ml);
+    return buildReportScreen({ eyebrow: 'Market Scan Report', accentColor: c, sections: [overview, trend, gap, comp, evid], saveAction: 'msSaveReport', rerunAction: 'msRerunScan' });
   }
 
   /* ============================================================
@@ -237,18 +273,41 @@ var StrategyFlow = (function () {
   }
 
   function ciScreenReport() {
-    var d = ciGetReportData();
-    var demoChips = d.demographics.chips.map(function (c) { return '<span class="ci-stat-chip">' + c + '</span>'; }).join('');
-    var whoBuying = msSection('Who\'s Buying', '<div class="ci-demo-card"><div class="ci-stat-chips">' + demoChips + '</div><div class="ci-demo-summary">' + d.demographics.summary + '</div></div>');
-    var jtbdCards = d.jtbd.map(function (j, i) { return '<div class="ci-jtbd-card"><div class="ci-jtbd-num">' + (i + 1) + '</div><div class="ci-jtbd-text">&ldquo;' + j + '&rdquo;</div></div>'; }).join('');
-    var jtbd = msSection('Jobs To Be Done', '<div class="ci-jtbd-list">' + jtbdCards + '</div>');
-    var journeySteps = d.journey.map(function (j, i) { return '<div class="ci-journey-step"><div class="ci-journey-step-inner"><div class="ci-journey-step-label">' + j.step + '</div><div class="ci-journey-step-desc">' + j.desc + '</div></div></div>' + (i < d.journey.length - 1 ? '<div class="ci-journey-arrow">&#8594;</div>' : ''); }).join('');
-    var journey = msSection('Decision Journey', '<div class="ci-journey-flow">' + journeySteps + '</div>');
+    var d  = ciGetReportData();
+    var c  = CI_COLOR;
+    var ml = 'Customer Intelligence';
+    var demoChips = d.demographics.chips.map(function (chip) { return '<span class="ci-stat-chip">' + chip + '</span>'; }).join('');
+    var whoBuying = msSection('Who\'s Buying',
+      '<div class="ci-demo-card"><div class="ci-stat-chips">' + demoChips + '</div>'
+      + '<div class="ci-demo-summary">' + hlStat(d.demographics.summary, c) + '</div></div>',
+      c, ml);
+    var jtbdCards = d.jtbd.map(function (j, i) {
+      return '<div class="ci-jtbd-card"><div class="ci-jtbd-num">' + (i + 1) + '</div>'
+        + '<div class="ci-jtbd-text">&ldquo;' + j + '&rdquo;</div></div>';
+    }).join('');
+    var jtbd = msSection('Jobs To Be Done', '<div class="ci-jtbd-list">' + jtbdCards + '</div>', c, ml);
+    var journeySteps = d.journey.map(function (j, i) {
+      return '<div class="ci-journey-step"><div class="ci-journey-step-inner">'
+        + '<div class="ci-journey-step-label">' + j.step + '</div>'
+        + '<div class="ci-journey-step-desc">' + j.desc + '</div>'
+        + '</div></div>'
+        + (i < d.journey.length - 1 ? '<div class="ci-journey-arrow">&#8594;</div>' : '');
+    }).join('');
+    var journey = msSection('Decision Journey', '<div class="ci-journey-flow">' + journeySteps + '</div>', c, ml);
     var triggerChips = d.triggers.map(function (t) { return '<span class="ci-trigger-chip">' + t + '</span>'; }).join('');
-    var triggers = msSection('Emotional Triggers', '<div class="ci-trigger-chips">' + triggerChips + '</div>');
-    var wtp = msSection('Willingness to Pay', '<div class="ci-wtp-wrap"><div class="ci-wtp-labels"><span>Low</span><span>Mid</span><span>High</span></div><div class="ci-wtp-track"><div class="ci-wtp-fill" style="width:' + d.wtp.position + '%"></div><div class="ci-wtp-marker" style="left:calc(' + d.wtp.position + '% - 7px)"></div></div><div class="ci-wtp-level">' + d.wtp.label + '</div><div class="ci-wtp-text">Customers typically spend <strong>' + d.wtp.spend + '</strong> and prioritise ' + d.wtp.priority + '.</div></div>');
-    var evid = msSectionLast('Evidence', buildEvidenceRows(d.evidence));
-    return buildReportScreen({ eyebrow: 'Customer Intelligence Report', sections: [whoBuying, jtbd, journey, triggers, wtp, evid], saveAction: 'ciSaveReport', rerunAction: 'ciRerunScan' });
+    var triggers = msSection('Emotional Triggers', '<div class="ci-trigger-chips">' + triggerChips + '</div>', c, ml);
+    var wtpSpend = '<strong style="color:' + c + '">' + d.wtp.spend + '</strong>';
+    var wtp = msSection('Willingness to Pay',
+      '<div class="ci-wtp-wrap">'
+      + '<div class="ci-wtp-labels"><span>Low spend</span><span>Mid range</span><span>High spend</span></div>'
+      + '<div class="ci-wtp-track"><div class="ci-wtp-fill" style="width:' + d.wtp.position + '%"></div>'
+      + '<div class="ci-wtp-marker" style="left:calc(' + d.wtp.position + '% - 7px)"></div></div>'
+      + '<div class="ci-wtp-level">' + d.wtp.label + ' willingness to spend</div>'
+      + '<div class="ci-wtp-text">Customers in this category typically spend ' + wtpSpend + ' per engagement and prioritise ' + d.wtp.priority + '.</div>'
+      + '</div>',
+      c, ml);
+    var evid = msSectionLast('Evidence', buildEvidenceRows(d.evidence), c, ml);
+    return buildReportScreen({ eyebrow: 'Customer Intelligence Report', accentColor: c, sections: [whoBuying, jtbd, journey, triggers, wtp, evid], saveAction: 'ciSaveReport', rerunAction: 'ciRerunScan' });
   }
 
   /* ============================================================
@@ -387,12 +446,14 @@ var StrategyFlow = (function () {
   }
 
   function compScreenReport() {
-    var d = compGetReportData();
+    var d  = compGetReportData();
+    var c  = COMP_COLOR;
+    var ml = 'Competition';
 
-    /* Overview */
-    var overview = msSection('Competitive Overview', '<div class="ms-overview-text">' + d.overview + '</div>');
+    var overview = msSection('Competitive Overview',
+      '<div class="ms-section-card"><div class="ms-overview-text">' + hlStat(d.overview, c) + '</div></div>',
+      c, ml);
 
-    /* Key Players */
     var playerCards = d.players.map(function (p) {
       return '<div class="comp-player-card">'
         + '<div class="comp-player-name">' + p.name + '</div>'
@@ -401,28 +462,43 @@ var StrategyFlow = (function () {
         + '<div class="comp-player-row"><span class="comp-player-tag weakness">&#9660; Weakness</span><span class="comp-player-detail">' + p.weakness + '</span></div>'
         + '</div>';
     }).join('');
-    var players = msSection('Key Players', '<div class="comp-players-grid">' + playerCards + '</div>');
+    var players = msSection('Key Players', '<div class="comp-players-grid">' + playerCards + '</div>', c, ml);
 
-    /* Positioning Map */
-    var posMap = msSection('Positioning Map', buildPositioningMap(d.map));
+    var posMap = msSection('Positioning Map', buildPositioningMap(d.map), c, ml);
 
-    /* Whitespace */
-    var whitespace = msSection('Whitespace Opportunity', '<div class="ms-gap-card"><div class="ms-gap-headline">Where you can win</div><div class="ms-gap-text">' + d.whitespace + '</div></div>');
+    var whitespace = msSection('Whitespace Opportunity',
+      '<div class="ms-gap-card" style="border-color:' + c + ';background:rgba(224,123,106,0.08)">'
+      + '<div class="ms-gap-headline" style="color:' + c + '">Where you can win</div>'
+      + '<div class="ms-gap-text">' + d.whitespace + '</div></div>',
+      c, ml);
 
-    /* Evidence */
-    var evid = msSectionLast('Evidence', buildEvidenceRows(d.evidence));
+    var evid = msSectionLast('Evidence', buildEvidenceRows(d.evidence), c, ml);
 
-    return buildReportScreen({ eyebrow: 'Competition Report', sections: [overview, players, posMap, whitespace, evid], saveAction: 'compSaveReport', rerunAction: 'compRerunScan' });
+    return buildReportScreen({ eyebrow: 'Competition Report', accentColor: c, sections: [overview, players, posMap, whitespace, evid], saveAction: 'compSaveReport', rerunAction: 'compRerunScan' });
   }
 
   /* ============================================================
      SHARED SECTION BUILDERS
      ============================================================ */
-  function msSection(label, body) {
-    return '<div class="ms-section"><div class="ms-section-label">' + label + '</div>' + body + '</div>';
+  function msSection(label, body, accentColor, moduleLabel) {
+    var bdr = accentColor ? ' style="border-left:3px solid ' + accentColor + '"' : '';
+    var eye = (moduleLabel && accentColor)
+      ? '<div class="ms-section-eyebrow" style="color:' + accentColor + '">' + moduleLabel + '</div>'
+      : '';
+    return '<div class="ms-section ms-stage-section"' + bdr + '>'
+      + eye
+      + '<div class="ms-section-label">' + label + '</div>'
+      + body + '</div>';
   }
-  function msSectionLast(label, body) {
-    return '<div class="ms-section border-0"><div class="ms-section-label">' + label + '</div>' + body + '</div>';
+  function msSectionLast(label, body, accentColor, moduleLabel) {
+    var bdr = accentColor ? ' style="border-left:3px solid ' + accentColor + '"' : '';
+    var eye = (moduleLabel && accentColor)
+      ? '<div class="ms-section-eyebrow" style="color:' + accentColor + '">' + moduleLabel + '</div>'
+      : '';
+    return '<div class="ms-section ms-stage-section border-0"' + bdr + '>'
+      + eye
+      + '<div class="ms-section-label">' + label + '</div>'
+      + body + '</div>';
   }
   function buildEvidenceRows(evidence) {
     return '<div class="ms-evidence-list">'
@@ -470,31 +546,37 @@ window.screenStrategyFlow = function () { return StrategyFlow.screenStrategyFlow
    GLOBAL EVENT HANDLERS
    ============================================================ */
 
-window.spGoWelcome = function () { appState.onboarding = { step: 1, authMode: 'signup' }; setMode('onboarding'); };
+window.spGoWelcome = function () { appState.onboarding = { step: 1, authMode: 'signup', subStep: 1 }; appState.business = { name: '', description: '', type: null }; setMode('onboarding'); };
 
 window.spGoHub = function () { appState.strategyFlow.screen = 'hub'; renderContent(); };
 
 window.spGoMarketScan = function () {
   appState.strategyFlow.screen = 'market-scan';
   if (!appState.strategyFlow.marketScan) appState.strategyFlow.marketScan = { step: 1, focus: '' };
-  appState.strategyFlow.marketScan.step = appState.strategy.marketScan ? 3 : 1;
+  var goingToReport = !!(appState.strategy.marketScan);
+  appState.strategyFlow.marketScan.step = goingToReport ? 3 : 1;
   renderContent();
+  if (goingToReport) requestAnimationFrame(function () { window.stageRevealReport(); });
 };
 
 window.spGoCustomerIntel = function () {
   if (!appState.strategy.marketScan) return;
   appState.strategyFlow.screen = 'customer-intel';
   if (!appState.strategyFlow.customerIntel) appState.strategyFlow.customerIntel = { step: 1, focus: '' };
-  appState.strategyFlow.customerIntel.step = appState.strategy.customerIntelligence ? 3 : 1;
+  var goingToReport = !!(appState.strategy.customerIntelligence);
+  appState.strategyFlow.customerIntel.step = goingToReport ? 3 : 1;
   renderContent();
+  if (goingToReport) requestAnimationFrame(function () { window.stageRevealReport(); });
 };
 
 window.spGoCompetition = function () {
   if (!appState.strategy.customerIntelligence) return;
   appState.strategyFlow.screen = 'competition';
   if (!appState.strategyFlow.competition) appState.strategyFlow.competition = { step: 1, focus: '' };
-  appState.strategyFlow.competition.step = appState.strategy.competition ? 3 : 1;
+  var goingToReport = !!(appState.strategy.competition);
+  appState.strategyFlow.competition.step = goingToReport ? 3 : 1;
   renderContent();
+  if (goingToReport) requestAnimationFrame(function () { window.stageRevealReport(); });
 };
 
 window.spGoToPersona = function () {
@@ -533,9 +615,9 @@ function runLoadingPhases(phases, onDone) {
   setTimeout(tick, 800);
 }
 
-window.msStartLoading   = function () { runLoadingPhases(['Scanning your market\u2026', 'Identifying key trends\u2026', 'Finding your gap\u2026', 'Building your report\u2026'], function () { if (appState.strategyFlow && appState.strategyFlow.marketScan) { appState.strategyFlow.marketScan.step = 3; renderContent(); } }); };
-window.ciStartLoading   = function () { runLoadingPhases(['Analysing your customer category\u2026', 'Mapping decision journeys\u2026', 'Identifying emotional triggers\u2026', 'Building your profile\u2026'], function () { if (appState.strategyFlow && appState.strategyFlow.customerIntel) { appState.strategyFlow.customerIntel.step = 3; renderContent(); } }); };
-window.compStartLoading = function () { runLoadingPhases(['Scanning your competitive landscape\u2026', 'Profiling key players\u2026', 'Mapping positioning gaps\u2026', 'Identifying your whitespace\u2026'], function () { if (appState.strategyFlow && appState.strategyFlow.competition) { appState.strategyFlow.competition.step = 3; renderContent(); } }); };
+window.msStartLoading   = function () { runLoadingPhases(['Scanning your market\u2026', 'Identifying key trends\u2026', 'Finding your gap\u2026', 'Building your report\u2026'], function () { if (appState.strategyFlow && appState.strategyFlow.marketScan) { appState.strategyFlow.marketScan.step = 3; renderContent(); requestAnimationFrame(function () { window.stageRevealReport(); }); } }); };
+window.ciStartLoading   = function () { runLoadingPhases(['Analysing your customer category\u2026', 'Mapping decision journeys\u2026', 'Identifying emotional triggers\u2026', 'Building your profile\u2026'], function () { if (appState.strategyFlow && appState.strategyFlow.customerIntel) { appState.strategyFlow.customerIntel.step = 3; renderContent(); requestAnimationFrame(function () { window.stageRevealReport(); }); } }); };
+window.compStartLoading = function () { runLoadingPhases(['Scanning your competitive landscape\u2026', 'Profiling key players\u2026', 'Mapping positioning gaps\u2026', 'Identifying your whitespace\u2026'], function () { if (appState.strategyFlow && appState.strategyFlow.competition) { appState.strategyFlow.competition.step = 3; renderContent(); requestAnimationFrame(function () { window.stageRevealReport(); }); } }); };
 
 /* Market Scan */
 window.msRunScan     = function () { var e = document.getElementById('ms-focus-input'); if (e) appState.strategyFlow.marketScan.focus = e.value; appState.strategyFlow.marketScan.step = 2; renderContent(); };
@@ -554,3 +636,29 @@ window.compRunScan    = function () { var e = document.getElementById('comp-focu
 window.compSaveReport = function () { appState.strategy.competition = { savedAt: Date.now(), type: (appState.business || {}).type || 'other' }; appState.strategyFlow.screen = 'hub'; renderContent(); };
 window.compRerunScan  = function () { appState.strategy.competition = null; appState.strategyFlow.competition = { step: 1, focus: (appState.strategyFlow.competition || {}).focus || '' }; appState.strategyFlow.screen = 'competition'; renderContent(); };
 window.compFocusInput = function (v) { if (!appState.strategyFlow.competition) appState.strategyFlow.competition = { step: 1, focus: '' }; appState.strategyFlow.competition.focus = v; };
+
+/* ============================================================
+   STAGED REVEAL — animates sections in 400ms apart
+   ============================================================ */
+window.stageRevealReport = function () {
+  var sections = document.querySelectorAll('.ms-stage-section');
+  var total    = sections.length;
+  if (!total) return;
+  var bar = document.getElementById('sp-stage-bar');
+
+  /* Reset any previously revealed sections (re-entry case) */
+  sections.forEach(function (s) { s.classList.remove('revealed'); });
+  if (bar) bar.style.width = '0%';
+
+  sections.forEach(function (s, i) {
+    setTimeout(function () {
+      s.classList.add('revealed');
+      if (bar) bar.style.width = Math.round(((i + 1) / total) * 100) + '%';
+    }, 120 + i * 380);
+  });
+};
+
+/* ============================================================
+   PDF DOWNLOAD — window.print() with @media print CSS
+   ============================================================ */
+window.downloadReportPDF = function () { window.print(); };

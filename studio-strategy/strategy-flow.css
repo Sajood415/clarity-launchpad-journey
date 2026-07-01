@@ -11,7 +11,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--ob-bg);
+  color: var(--ob-text);
 }
 
 .sp-hub-body {
@@ -34,15 +35,16 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--primary-hover);
+  color: var(--ob-gold);
   margin-bottom: 10px;
+  opacity: 0.8;
 }
 
 .sp-hub-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 34px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--ob-text);
   letter-spacing: -0.01em;
   line-height: 1.2;
   margin-bottom: 10px;
@@ -50,7 +52,7 @@
 
 .sp-hub-sub {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.7;
   max-width: 560px;
   margin-bottom: 36px;
@@ -65,8 +67,8 @@
 }
 
 .sp-module-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--ob-surface);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius);
   padding: 24px 22px 20px;
   display: flex;
@@ -78,30 +80,40 @@
   overflow: hidden;
 }
 
+/* Active states — neutral default (overridden per-module below) */
 .sp-module-card.active {
-  border-color: rgba(99,102,241,0.4);
+  border-left: 3px solid var(--ob-gold);
 }
 
 .sp-module-card.active:hover {
-  border-color: var(--primary);
-  box-shadow: 0 4px 20px rgba(99,102,241,0.12);
   transform: translateY(-2px);
 }
 
 .sp-module-card.complete {
-  border-color: rgba(52,211,153,0.35);
+  border-left: 3px solid var(--ob-teal);
 }
 
 .sp-module-card.complete:hover {
-  border-color: rgba(52,211,153,0.6);
-  box-shadow: 0 4px 16px rgba(52,211,153,0.08);
   transform: translateY(-2px);
 }
 
 .sp-module-card.locked {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* --- Per-module accent colors --- */
+/* Market Scan — amber gold */
+.sp-module-card.ms.active  { border-left-color: var(--ob-gold); }
+.sp-module-card.ms.complete { border-left-color: var(--ob-teal); }
+
+/* Customer Intelligence — teal */
+.sp-module-card.ci.active  { border-left-color: var(--ob-teal); }
+.sp-module-card.ci.complete { border-left-color: var(--ob-teal); }
+
+/* Competition — coral */
+.sp-module-card.comp.active  { border-left-color: var(--ob-coral); }
+.sp-module-card.comp.complete { border-left-color: var(--ob-teal); }
 
 .sp-module-card-top {
   display: flex;
@@ -114,26 +126,26 @@
   width: 42px;
   height: 42px;
   border-radius: 10px;
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ob-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--muted);
+  color: var(--ob-muted);
   flex-shrink: 0;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.sp-module-card.active .sp-module-icon {
-  background: var(--primary-dim);
-  border-color: rgba(99,102,241,0.35);
-  color: var(--primary-hover);
-}
+/* Per-module icon accent on active */
+.sp-module-card.ms.active    .sp-module-icon { background: var(--ob-gold-dim);  border-color: var(--ob-gold-rim);  color: var(--ob-gold);  }
+.sp-module-card.ci.active    .sp-module-icon { background: var(--ob-teal-dim);  border-color: var(--ob-teal-rim);  color: var(--ob-teal);  }
+.sp-module-card.comp.active  .sp-module-icon { background: var(--ob-coral-dim); border-color: var(--ob-coral-rim); color: var(--ob-coral); }
 
+/* Complete state — teal success */
 .sp-module-card.complete .sp-module-icon {
-  background: rgba(52,211,153,0.08);
-  border-color: rgba(52,211,153,0.3);
-  color: #34d399;
+  background: var(--ob-teal-dim);
+  border-color: var(--ob-teal-rim);
+  color: var(--ob-teal);
 }
 
 .sp-mod-badge {
@@ -148,28 +160,33 @@
 }
 
 .sp-mod-badge.active {
-  background: var(--primary-dim);
-  color: var(--primary-hover);
-  border: 1px solid rgba(99,102,241,0.25);
+  background: var(--ob-gold-dim);
+  color: var(--ob-gold);
+  border: 1px solid var(--ob-gold-rim);
 }
 
+/* Per-module active badge colors */
+.sp-module-card.ci.active   .sp-mod-badge.active  { background: var(--ob-teal-dim);  color: var(--ob-teal);  border-color: var(--ob-teal-rim);  }
+.sp-module-card.comp.active .sp-mod-badge.active  { background: var(--ob-coral-dim); color: var(--ob-coral); border-color: var(--ob-coral-rim); }
+
 .sp-mod-badge.complete {
-  background: rgba(52,211,153,0.1);
-  color: #34d399;
-  border: 1px solid rgba(52,211,153,0.25);
+  background: var(--ob-teal-dim);
+  color: var(--ob-teal);
+  border: 1px solid var(--ob-teal-rim);
 }
 
 .sp-mod-badge.locked {
-  background: var(--card2);
-  color: var(--muted);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  color: var(--ob-muted);
+  border: 1px solid var(--ob-border);
+  opacity: 0.7;
 }
 
 .sp-mod-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--primary-hover);
+  background: currentColor;
   animation: home-pulse 2s ease infinite;
   flex-shrink: 0;
 }
@@ -177,13 +194,13 @@
 .sp-module-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ob-text);
   margin-bottom: 8px;
 }
 
 .sp-module-desc {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.65;
   flex: 1;
   margin-bottom: 18px;
@@ -206,29 +223,60 @@
 }
 
 .sp-module-cta.primary {
-  background: var(--primary);
-  color: #fff;
-  border: 1px solid var(--primary);
+  background: var(--ob-gold);
+  color: #12100e;
+  border: 1px solid var(--ob-gold);
+  font-weight: 600;
 }
 
 .sp-module-cta.primary:hover {
-  background: var(--primary-hover);
+  background: #deb86a;
 }
+
+/* Per-module primary CTA tint */
+.sp-module-card.ci.active   .sp-module-cta.primary { background: var(--ob-teal);  border-color: var(--ob-teal);  color: #0a2826; }
+.sp-module-card.ci.active   .sp-module-cta.primary:hover { background: #4de0cc; }
+.sp-module-card.comp.active .sp-module-cta.primary { background: var(--ob-coral); border-color: var(--ob-coral); color: #2a0c09; }
+.sp-module-card.comp.active .sp-module-cta.primary:hover { background: #e89083; }
 
 .sp-module-cta.outline {
   background: none;
-  color: var(--muted);
-  border: 1px solid var(--border);
+  color: var(--ob-muted);
+  border: 1px solid var(--ob-border);
 }
 
 .sp-module-cta.outline:hover {
-  color: #34d399;
-  border-color: rgba(52,211,153,0.4);
+  color: var(--ob-teal);
+  border-color: var(--ob-teal-rim);
 }
 
 /* ---- Continue to Persona button ---- */
 .sp-hub-continue {
   margin-top: 4px;
+}
+
+/* ---- Warm-themed save / outline buttons in report footer ---- */
+.sp-btn-save {
+  background: var(--ob-gold) !important;
+  color: #12100e !important;
+  border: 1px solid var(--ob-gold) !important;
+  font-weight: 600 !important;
+  transition: background 0.15s !important;
+}
+
+.sp-btn-save:hover {
+  background: #deb86a !important;
+}
+
+.sp-btn-warm-outline {
+  border-color: var(--ob-border) !important;
+  color: var(--ob-muted) !important;
+}
+
+.sp-btn-warm-outline:hover {
+  border-color: rgba(255,255,255,0.2) !important;
+  color: var(--ob-text) !important;
+  background: rgba(255,255,255,0.04) !important;
 }
 
 /* ============================================================
@@ -250,9 +298,9 @@
 }
 
 .ms-context-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--primary);
+  background: var(--ob-surface);
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-gold);
   border-radius: var(--radius);
   padding: 4px 0;
   margin-bottom: 28px;
@@ -263,17 +311,18 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--primary-hover);
+  color: var(--ob-gold);
   padding: 14px 18px 10px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--ob-border);
   margin-bottom: 0;
+  opacity: 0.85;
 }
 
 .ms-context-row {
   display: flex;
   gap: 12px;
   padding: 11px 18px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--ob-border);
   align-items: flex-start;
 }
 
@@ -287,7 +336,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--muted);
+  color: var(--ob-muted);
   width: 72px;
   flex-shrink: 0;
   padding-top: 1px;
@@ -295,7 +344,7 @@
 
 .ms-context-val {
   font-size: 13px;
-  color: var(--text);
+  color: var(--ob-text);
   line-height: 1.55;
 }
 
@@ -310,7 +359,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: var(--ob-muted);
   margin-bottom: 8px;
 }
 
@@ -319,17 +368,17 @@
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
-  color: var(--muted);
+  color: var(--ob-muted);
   opacity: 0.7;
 }
 
 .ms-focus-input {
   width: 100%;
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
-  color: var(--text);
+  color: var(--ob-text);
   font-size: 14px;
   line-height: 1.5;
   outline: none;
@@ -338,20 +387,21 @@
 }
 
 .ms-focus-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+  border-color: var(--ob-gold-rim);
+  box-shadow: 0 0 0 3px var(--ob-gold-dim);
 }
 
 .ms-focus-input::placeholder {
-  color: var(--muted);
-  opacity: 0.6;
+  color: var(--ob-muted);
+  opacity: 0.55;
 }
 
 .ms-focus-hint {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ob-muted);
   margin-top: 6px;
   line-height: 1.5;
+  opacity: 0.7;
 }
 
 /* ============================================================
@@ -373,7 +423,7 @@
 
 .ms-loading-screen {
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--ob-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -404,19 +454,19 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1.5px solid rgba(99,102,241,0.5);
+  border: 1.5px solid rgba(212,168,83,0.55);
   animation: ms-orb-pulse 2s ease-in-out infinite;
 }
 
 .ms-orb-ring.delay1 {
   inset: -10px;
-  border-color: rgba(99,102,241,0.3);
+  border-color: rgba(212,168,83,0.3);
   animation: ms-orb-pulse 2s 0.4s ease-in-out infinite;
 }
 
 .ms-orb-ring.delay2 {
   inset: -22px;
-  border-color: rgba(99,102,241,0.15);
+  border-color: rgba(212,168,83,0.14);
   animation: ms-orb-pulse-2 2s 0.8s ease-in-out infinite;
 }
 
@@ -424,14 +474,14 @@
   font-family: 'Cormorant Garamond', serif;
   font-size: 22px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--ob-gold);
   letter-spacing: 0.04em;
   margin-bottom: 20px;
 }
 
 .ms-loading-phase {
   font-size: 15px;
-  color: var(--text);
+  color: var(--ob-text);
   font-weight: 500;
   margin-bottom: 24px;
   transition: opacity 0.22s ease, transform 0.22s ease;
@@ -441,7 +491,7 @@
 .ms-loading-bar-track {
   width: 240px;
   height: 3px;
-  background: var(--border);
+  background: var(--ob-border);
   border-radius: 2px;
   overflow: hidden;
   margin-bottom: 28px;
@@ -449,7 +499,7 @@
 
 .ms-loading-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+  background: linear-gradient(90deg, var(--ob-gold), #deb86a);
   border-radius: 2px;
   transition: width 0.6s cubic-bezier(.4,0,.2,1);
 }
@@ -466,7 +516,7 @@
   align-items: center;
   gap: 10px;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--ob-muted);
   opacity: 0.35;
   transition: opacity 0.3s ease;
   text-align: left;
@@ -474,7 +524,7 @@
 
 .ms-phase-dot {
   font-size: 8px;
-  color: var(--muted);
+  color: var(--ob-muted);
   width: 14px;
   flex-shrink: 0;
   text-align: center;
@@ -482,11 +532,11 @@
 }
 
 .ms-phase-dot.active {
-  color: var(--primary-hover);
+  color: var(--ob-gold);
 }
 
 .ms-phase-dot.done {
-  color: #34d399;
+  color: var(--ob-teal);
   font-size: 10px;
 }
 
@@ -494,28 +544,28 @@
    MARKET SCAN — Screen 3: Report
    ============================================================ */
 .ms-report-body {
-  background: var(--bg);
+  background: var(--ob-bg);
 }
 
 .ms-report-card {
   max-width: 740px;
   margin: 0 auto;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  animation: cf-step-fade 0.22s ease both;
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Report header bar */
+/* Report header — own card with accent left border (set inline) */
 .ms-report-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px 24px 18px;
-  border-bottom: 1px solid var(--border);
-  background: var(--card2);
+  padding: 18px 22px 16px;
+  border: 1px solid var(--ob-border);
+  border-radius: var(--radius);
+  background: var(--ob-surface);
+  margin-bottom: 10px;
 }
 
 .ms-report-eyebrow {
@@ -523,14 +573,15 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--primary-hover);
+  color: var(--ob-gold);
   margin-bottom: 4px;
+  opacity: 0.85;
 }
 
 .ms-report-biz {
   font-size: 16px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ob-text);
 }
 
 .ms-report-header-right {
@@ -543,7 +594,7 @@
 
 .ms-report-date {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ob-muted);
 }
 
 .ms-report-status-chip {
@@ -551,36 +602,110 @@
   font-weight: 600;
   padding: 3px 9px;
   border-radius: 10px;
-  background: var(--primary-dim);
-  color: var(--primary-hover);
-  border: 1px solid rgba(99,102,241,0.2);
+  background: var(--ob-gold-dim);
+  color: var(--ob-gold);
+  border: 1px solid var(--ob-gold-rim);
   letter-spacing: 0.02em;
 }
 
-/* Sections */
-.ms-section {
-  padding: 22px 24px;
-  border-bottom: 1px solid var(--border);
+/* ---- Section eyebrow ---- */
+.ms-section-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  opacity: 0.75;
 }
 
-.ms-section.border-0,
-.ms-section:last-child {
-  border-bottom: none;
+/* ---- Staged reveal animation ---- */
+.ms-stage-section {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.38s cubic-bezier(.22,.68,0,1.2), transform 0.38s cubic-bezier(.22,.68,0,1.2);
+}
+
+.ms-stage-section.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Sections — card-based, each is its own container */
+.ms-section {
+  padding: 20px 22px;
+  border: 1px solid var(--ob-border);
+  border-radius: var(--radius);
+  background: var(--ob-surface);
+  margin-bottom: 10px;
+}
+
+.ms-section.border-0 {
+  margin-bottom: 0;
 }
 
 .ms-section-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+  letter-spacing: 0.09em;
+  color: var(--ob-text);
   margin-bottom: 14px;
 }
 
+/* Inner text card for sections with only narrative text */
+.ms-section-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--ob-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
 .ms-overview-text {
-  font-size: 14px;
-  color: var(--text);
+  font-size: 13px;
+  color: var(--ob-muted);
   line-height: 1.75;
+}
+
+/* ---- Stage progress bar — thin strip at very bottom ---- */
+.sp-stage-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  z-index: 20;
+  pointer-events: none;
+}
+
+.sp-stage-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ---- PDF download button ---- */
+.ms-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ob-border);
+  background: transparent;
+  color: var(--ob-muted);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 4px;
+}
+
+.ms-pdf-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--ob-text);
 }
 
 /* Trend callout */
@@ -588,9 +713,9 @@
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  background: var(--card2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--primary);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-gold);
   border-radius: var(--radius);
   padding: 16px 18px;
 }
@@ -605,20 +730,20 @@
 .ms-trend-headline {
   font-size: 14px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ob-text);
   margin-bottom: 5px;
 }
 
 .ms-trend-text {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.6;
 }
 
-/* Market Gap */
+/* Market Gap — amber accent */
 .ms-gap-card {
-  background: var(--primary-dim);
-  border: 1px solid rgba(99,102,241,0.3);
+  background: var(--ob-gold-dim);
+  border: 1px solid var(--ob-gold-rim);
   border-radius: var(--radius);
   padding: 18px 20px;
   position: relative;
@@ -629,7 +754,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 200px 120px at 100% 50%, rgba(99,102,241,0.08), transparent);
+  background: radial-gradient(ellipse 200px 120px at 100% 50%, rgba(212,168,83,0.06), transparent);
   pointer-events: none;
 }
 
@@ -637,14 +762,14 @@
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
   font-weight: 600;
-  color: var(--primary-hover);
+  color: var(--ob-gold);
   margin-bottom: 8px;
   letter-spacing: -0.01em;
 }
 
 .ms-gap-text {
   font-size: 14px;
-  color: var(--text);
+  color: var(--ob-text);
   line-height: 1.7;
 }
 
@@ -656,8 +781,8 @@
 }
 
 .ms-comp-card {
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius-sm);
   padding: 14px 14px 13px;
 }
@@ -665,13 +790,13 @@
 .ms-comp-name {
   font-size: 12px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ob-text);
   margin-bottom: 5px;
 }
 
 .ms-comp-pos {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.55;
 }
 
@@ -688,7 +813,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--ob-border);
 }
 
 .ms-evidence-row:last-child {
@@ -704,7 +829,7 @@
 .ms-evidence-pub {
   font-size: 11px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ob-text);
   margin-bottom: 3px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -712,7 +837,7 @@
 
 .ms-evidence-snippet {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.5;
   font-style: italic;
 }
@@ -723,9 +848,9 @@
   font-weight: 600;
   padding: 3px 9px;
   border-radius: 10px;
-  background: rgba(52,211,153,0.08);
-  color: #34d399;
-  border: 1px solid rgba(52,211,153,0.2);
+  background: var(--ob-teal-dim);
+  color: var(--ob-teal);
+  border: 1px solid var(--ob-teal-rim);
   letter-spacing: 0.02em;
   white-space: nowrap;
   align-self: center;
@@ -737,8 +862,8 @@
 
 /* ---- Who's Buying: demographic chips + summary ---- */
 .ci-demo-card {
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius);
   padding: 16px 18px;
 }
@@ -757,14 +882,14 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  background: var(--primary-dim);
-  color: var(--primary-hover);
-  border: 1px solid rgba(99,102,241,0.28);
+  background: var(--ob-teal-dim);
+  color: var(--ob-teal);
+  border: 1px solid var(--ob-teal-rim);
 }
 
 .ci-demo-summary {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.65;
 }
 
@@ -779,8 +904,8 @@
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius);
   padding: 14px 16px;
 }
@@ -789,9 +914,9 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--primary-dim);
-  border: 1px solid rgba(99,102,241,0.3);
-  color: var(--primary-hover);
+  background: var(--ob-teal-dim);
+  border: 1px solid var(--ob-teal-rim);
+  color: var(--ob-teal);
   font-size: 12px;
   font-weight: 700;
   display: flex;
@@ -803,7 +928,7 @@
 
 .ci-jtbd-text {
   font-size: 13px;
-  color: var(--text);
+  color: var(--ob-text);
   line-height: 1.65;
   font-style: italic;
 }
@@ -823,8 +948,8 @@
 }
 
 .ci-journey-step-inner {
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius);
   padding: 14px 14px 13px;
   height: 100%;
@@ -833,25 +958,22 @@
 .ci-journey-step-label {
   font-size: 11px;
   font-weight: 700;
-  color: var(--primary-hover);
+  color: var(--ob-teal);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 6px;
-}
-
-.ci-journey-step-inner:hover .ci-journey-step-label {
-  color: var(--primary-hover);
+  opacity: 0.9;
 }
 
 .ci-journey-step-desc {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.55;
 }
 
 .ci-journey-arrow {
   flex-shrink: 0;
-  color: var(--border);
+  color: var(--ob-border);
   font-size: 18px;
   padding: 0 8px;
   align-self: center;
@@ -874,9 +996,9 @@
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
-  background: var(--card2);
-  color: var(--text);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--ob-text);
+  border: 1px solid var(--ob-border);
   transition: border-color 0.15s;
 }
 
@@ -894,21 +1016,21 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--muted);
+  color: var(--ob-muted);
   padding: 0 2px;
 }
 
 .ci-wtp-track {
   position: relative;
   height: 8px;
-  background: var(--border);
+  background: var(--ob-border);
   border-radius: 4px;
   overflow: visible;
 }
 
 .ci-wtp-fill {
   height: 100%;
-  background: linear-gradient(90deg, rgba(99,102,241,0.3), var(--primary));
+  background: linear-gradient(90deg, rgba(45,212,191,0.3), var(--ob-teal));
   border-radius: 4px;
   transition: width 0.4s ease;
 }
@@ -919,26 +1041,26 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--primary);
-  border: 2px solid var(--bg);
-  box-shadow: 0 0 0 2px var(--primary);
+  background: var(--ob-teal);
+  border: 2px solid var(--ob-bg);
+  box-shadow: 0 0 0 2px var(--ob-teal);
   transition: left 0.4s ease;
 }
 
 .ci-wtp-level {
   font-size: 13px;
   font-weight: 700;
-  color: var(--primary-hover);
+  color: var(--ob-teal);
 }
 
 .ci-wtp-text {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.6;
 }
 
 .ci-wtp-text strong {
-  color: var(--text);
+  color: var(--ob-text);
   font-weight: 600;
 }
 
@@ -954,8 +1076,8 @@
 }
 
 .comp-player-card {
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius);
   padding: 16px 15px 14px;
   display: flex;
@@ -966,15 +1088,15 @@
 .comp-player-name {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--ob-text);
 }
 
 .comp-player-pos {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.55;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--ob-border);
 }
 
 .comp-player-row {
@@ -994,20 +1116,20 @@
 }
 
 .comp-player-tag.strength {
-  background: rgba(52,211,153,0.1);
-  color: #34d399;
-  border: 1px solid rgba(52,211,153,0.2);
+  background: var(--ob-teal-dim);
+  color: var(--ob-teal);
+  border: 1px solid var(--ob-teal-rim);
 }
 
 .comp-player-tag.weakness {
-  background: rgba(251,191,36,0.1);
-  color: #fbbf24;
-  border: 1px solid rgba(251,191,36,0.2);
+  background: var(--ob-gold-dim);
+  color: var(--ob-gold);
+  border: 1px solid var(--ob-gold-rim);
 }
 
 .comp-player-detail {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ob-muted);
   line-height: 1.5;
 }
 
@@ -1035,7 +1157,7 @@
 .comp-map-yaxis-lo {
   font-size: 9px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--ob-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   writing-mode: horizontal-tb;
@@ -1044,7 +1166,7 @@
 .comp-map-yaxis-name {
   font-size: 9px;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--ob-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   writing-mode: vertical-rl;
@@ -1065,8 +1187,8 @@
 .comp-map-field {
   position: relative;
   height: 300px;
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--ob-border);
   border-radius: var(--radius);
   /* Subtle quadrant grid via repeating gradient */
   background-image:
@@ -1120,14 +1242,14 @@
   z-index: 2;
 }
 
-/* "You" dot (indigo filled) */
+/* "You" dot (amber gold filled) */
 .comp-dot-you {
   width: 13px;
   height: 13px;
-  background: var(--primary);
-  border: 2px solid rgba(99,102,241,0.5);
+  background: var(--ob-gold);
+  border: 2px solid rgba(212,168,83,0.5);
   z-index: 4;
-  box-shadow: 0 0 10px rgba(99,102,241,0.4);
+  box-shadow: 0 0 12px rgba(212,168,83,0.45);
 }
 
 /* Dashed ring around "You" */
@@ -1135,35 +1257,35 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(99,102,241,0.55);
+  border: 1.5px dashed rgba(212,168,83,0.6);
   z-index: 3;
   animation: comp-ring-pulse 2.5s ease-in-out infinite;
 }
 
 @keyframes comp-ring-pulse {
-  0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
-  50%       { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 0.9; transform: translate(-50%, -50%) scale(1.06); }
 }
 
 /* Dot labels */
 .comp-dot-label {
   font-size: 10px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--ob-text);
   white-space: nowrap;
-  background: rgba(10,10,16,0.88);
+  background: rgba(18,16,14,0.92);
   padding: 2px 7px;
   border-radius: 5px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--ob-border);
   z-index: 5;
   pointer-events: none;
   line-height: 1.6;
 }
 
 .comp-dot-label-you {
-  color: var(--primary-hover);
-  border-color: rgba(99,102,241,0.35);
-  background: rgba(99,102,241,0.12);
+  color: var(--ob-gold);
+  border-color: var(--ob-gold-rim);
+  background: rgba(18,16,14,0.95);
   font-weight: 700;
 }
 
@@ -1175,7 +1297,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--muted);
+  color: var(--ob-muted);
   padding: 0 2px;
 }
 
@@ -1193,4 +1315,83 @@
   .ci-journey-flow   { gap: 0; }
   .ci-journey-arrow  { padding: 0 4px; font-size: 14px; }
   .comp-map-field    { height: 220px; }
+}
+
+/* ============================================================
+   PRINT / PDF DOWNLOAD
+   ============================================================ */
+@media print {
+  /* Force sections visible regardless of animation state */
+  .ms-stage-section { opacity: 1 !important; transform: none !important; }
+
+  /* Hide chrome */
+  .cf-topbar,
+  .cf-footer,
+  .sp-stage-progress,
+  .ms-pdf-btn { display: none !important; }
+
+  /* Let report body scroll to full height */
+  body, .cf-screen, .ms-body.ms-report-body {
+    overflow: visible !important;
+    background: #fff !important;
+    color: #1a1a1a !important;
+  }
+
+  .ms-report-card { max-width: 100% !important; padding: 0 !important; }
+
+  /* Light-mode card overrides */
+  .ms-report-header,
+  .ms-section {
+    background: #fff !important;
+    border-color: #ddd !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .ms-section-label,
+  .ms-report-biz,
+  .ms-trend-headline,
+  .ms-gap-headline,
+  .ms-comp-name,
+  .ci-jtbd-num,
+  .comp-player-name { color: #1a1a1a !important; }
+
+  .ms-overview-text,
+  .ms-trend-text,
+  .ms-gap-text,
+  .ms-comp-pos,
+  .ci-demo-summary,
+  .ci-jtbd-text,
+  .ci-journey-step-desc,
+  .ci-wtp-text,
+  .comp-player-pos,
+  .comp-player-detail { color: #444 !important; }
+
+  .ms-section-eyebrow { opacity: 0.7 !important; }
+
+  .ms-trend-callout,
+  .ms-gap-card,
+  .ci-demo-card,
+  .ci-jtbd-card,
+  .comp-player-card,
+  .ms-section-card { background: #f9f9f9 !important; border-color: #eee !important; }
+
+  .ms-evidence-snippet,
+  .ms-evidence-pub { color: #555 !important; }
+
+  .ci-journey-step-inner { background: #f0f0f0 !important; border-color: #ddd !important; }
+
+  .ci-stat-chip,
+  .ci-trigger-chip { background: #eee !important; color: #333 !important; border-color: #ccc !important; }
+
+  .ms-confidence-chip { background: #e8f5e9 !important; color: #2e7d32 !important; border-color: #a5d6a7 !important; }
+
+  .comp-map-field { background: #fafafa !important; border-color: #ddd !important; }
+
+  .comp-dot-grey { background: #999 !important; }
+  .comp-dot-you  { background: #d4a853 !important; }
+  .comp-dot-label { color: #333 !important; background: #fff !important; border-color: #ddd !important; }
+
+  strong[style] { /* keep color hints but ensure readability */ }
 }

@@ -7,14 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="onboarding/onboarding.css?v=1">
-<link rel="stylesheet" href="studio-strategy/strategy-flow.css?v=1">
-<link rel="stylesheet" href="studio-persona/persona-flow.css?v=1">
+<link rel="stylesheet" href="onboarding/onboarding.css?v=3">
+<link rel="stylesheet" href="studio-strategy/strategy-flow.css?v=3">
+<link rel="stylesheet" href="studio-persona/persona-flow.css?v=2">
 <link rel="stylesheet" href="studio-text/studio-text.css?v=5">
 <link rel="stylesheet" href="studio-image/studio-image.css?v=4">
 <link rel="stylesheet" href="studio-video/studio-video.css?v=3">
-<link rel="stylesheet" href="studio-create/create-flow.css?v=8">
-<link rel="stylesheet" href="studio-campaign/campaign-flow.css?v=8">
+<link rel="stylesheet" href="studio-create/create-flow.css?v=9">
+<link rel="stylesheet" href="studio-campaign/campaign-flow.css?v=9">
 <style>
 /* Reset & tokens */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,20 +24,37 @@ input, textarea, select { font-family: inherit; }
 a { text-decoration: none; color: inherit; }
 
 :root {
-  --bg: #0e1320;
-  --card: #171d2e;
-  --card2: #1c2337;
-  --primary: #6366f1;
-  --primary-hover: #818cf8;
-  --primary-dim: rgba(99,102,241,0.15);
-  --text: #e8eaf2;
-  --muted: #9aa0b4;
-  --border: #262c40;
-  --accent: #34d399;
+  --bg: #12100e;
+  --card: #1c1916;
+  --card2: #231f1b;
+  --primary: #d4a853;
+  --primary-hover: #e6be7a;
+  --primary-dim: rgba(212,168,83,0.12);
+  --text: #e8e0d5;
+  --muted: #9a8f82;
+  --border: rgba(255,255,255,0.10);
+  --accent: #2dd4bf;
   --warning: #f59e0b;
   --danger: #f87171;
   --radius: 10px;
   --radius-sm: 6px;
+
+  /* Warm brand palette — onboarding, strategic planning, persona studio */
+  --ob-bg:        #12100e;
+  --ob-surface:   #1c1916;
+  --ob-surface2:  #231f1b;
+  --ob-border:    rgba(255,255,255,0.08);
+  --ob-gold:      #d4a853;
+  --ob-gold-dim:  rgba(212,168,83,0.12);
+  --ob-gold-rim:  rgba(212,168,83,0.28);
+  --ob-teal:      #2dd4bf;
+  --ob-teal-dim:  rgba(45,212,191,0.10);
+  --ob-teal-rim:  rgba(45,212,191,0.28);
+  --ob-coral:     #e07b6a;
+  --ob-coral-dim: rgba(224,123,106,0.10);
+  --ob-coral-rim: rgba(224,123,106,0.28);
+  --ob-muted:     #9a8f82;
+  --ob-text:      #e8e0d5;
 }
 
 /* Shell — no sidebar, full screen */
@@ -85,11 +102,11 @@ a { text-decoration: none; color: inherit; }
 .home-status {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 14px; border-radius: 20px;
-  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3);
-  color: #34d399; font-size: 11px; font-weight: 600; margin-bottom: 22px;
+  background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.3);
+  color: #2dd4bf; font-size: 11px; font-weight: 600; margin-bottom: 22px;
 }
 .home-pulse-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: #34d399;
+  width: 7px; height: 7px; border-radius: 50%; background: #2dd4bf;
   animation: home-pulse 2s ease infinite;
 }
 @keyframes home-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
@@ -158,7 +175,7 @@ a { text-decoration: none; color: inherit; }
   transition: all 0.15s; user-select: none;
 }
 .home-toggle-opt:hover { color: var(--text); background: var(--primary-dim); }
-.home-toggle-opt.active { color: var(--text); background: var(--primary-dim); border-color: rgba(99,102,241,0.3); }
+.home-toggle-opt.active { color: var(--text); background: var(--primary-dim); border-color: rgba(212,168,83,0.3); }
 .home-toggle-radio-dot {
   width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0;
   border: 2px solid var(--border); display: flex; align-items: center;
@@ -264,7 +281,7 @@ a { text-decoration: none; color: inherit; }
    ============================================================ */
 .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
 .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-.pill-green { background: rgba(52,211,153,0.12); color: #34d399; }
+.pill-green { background: rgba(45,212,191,0.12); color: #2dd4bf; }
 .pill-indigo { background: var(--primary-dim); color: var(--primary-hover); }
 .pill-amber { background: rgba(245,158,11,0.12); color: #f59e0b; }
 .pill-red { background: rgba(248,113,113,0.12); color: #f87171; }
@@ -300,14 +317,14 @@ a { text-decoration: none; color: inherit; }
 .wiz-label { font-size: 10px; color: var(--muted); margin-top: 6px; white-space: nowrap; }
 
 /* Toggles */
-.toggle-sw { width: 36px; height: 20px; background: var(--border); border-radius: 10px; position: relative; transition: all 0.2s; cursor: pointer; flex-shrink: 0; }
+.toggle-sw { width: 36px; height: 20px; background: rgba(255,255,255,0.18); border-radius: 10px; position: relative; transition: all 0.2s; cursor: pointer; flex-shrink: 0; }
 .toggle-sw.on { background: var(--primary); }
 .toggle-knob { width: 16px; height: 16px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: all 0.2s; }
 .toggle-sw.on .toggle-knob { left: 18px; }
 
 /* Persona fit */
 .pf-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; }
-.pf-chip.green { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+.pf-chip.green { background: rgba(45,212,191,0.12); color: #2dd4bf; border: 1px solid rgba(45,212,191,0.3); }
 .pf-chip.amber { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
 .pf-chip.red { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
 .pf-chip-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
@@ -320,19 +337,19 @@ a { text-decoration: none; color: inherit; }
 
 /* Compliance + brand voice (Text wizard) */
 .ch-compliance { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-family: 'DM Mono', monospace; }
-.ch-compliance.ok { background: rgba(52,211,153,0.1); color: #34d399; }
+.ch-compliance.ok { background: rgba(45,212,191,0.1); color: #2dd4bf; }
 .ch-compliance.warn { background: rgba(245,158,11,0.1); color: #f59e0b; }
 .ch-compliance.fail { background: rgba(248,113,113,0.1); color: #f87171; }
 .bv-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
 .bv-meter-bar { height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; margin-bottom: 4px; }
 .bv-meter-fill { height: 100%; border-radius: 4px; }
-.bv-meter-fill.good { background: #34d399; }
+.bv-meter-fill.good { background: #2dd4bf; }
 .bv-meter-fill.warn { background: #f59e0b; }
 
 /* Evidence rail (Text wizard) */
 .evidence-item { padding: 10px 12px; border-radius: 8px; background: var(--card2); border: 1px solid var(--border); margin-bottom: 8px; }
 .evidence-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 4px; margin-bottom: 6px; display: inline-block; }
-.evidence-tag.research { background: rgba(99,102,241,0.12); color: var(--primary-hover); }
+.evidence-tag.research { background: rgba(212,168,83,0.12); color: var(--primary-hover); }
 .evidence-tag.social { background: rgba(245,158,11,0.12); color: #f59e0b; }
 .evidence-text { font-size: 12px; color: var(--text); line-height: 1.5; }
 .evidence-source { font-size: 10px; color: var(--muted); margin-top: 4px; }
@@ -340,10 +357,10 @@ a { text-decoration: none; color: inherit; }
 /* Approvals (Audio) */
 .approval-rail { display: flex; flex-direction: column; gap: 8px; }
 .approval-step { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--card2); border: 1px solid var(--border); }
-.approval-step.done { border-color: rgba(52,211,153,0.35); background: rgba(52,211,153,0.06); }
+.approval-step.done { border-color: rgba(45,212,191,0.35); background: rgba(45,212,191,0.06); }
 .approval-step.active { border-color: var(--primary); background: var(--primary-dim); }
 .approval-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
-.approval-icon.done { background: rgba(52,211,153,0.15); color: #34d399; }
+.approval-icon.done { background: rgba(45,212,191,0.15); color: #2dd4bf; }
 .approval-icon.active { background: var(--primary-dim); color: var(--primary-hover); }
 .approval-meta { flex: 1; }
 .approval-name { font-size: 12px; font-weight: 600; color: var(--text); }
@@ -352,16 +369,16 @@ a { text-decoration: none; color: inherit; }
 /* Audio studio */
 .audio-chapter-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
 .audio-chapter { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; background: var(--card2); border: 1px solid var(--border); cursor: pointer; }
-.audio-chapter.playing { border-color: #34d399; background: rgba(52,211,153,0.06); }
+.audio-chapter.playing { border-color: #2dd4bf; background: rgba(45,212,191,0.06); }
 .audio-ch-num { width: 20px; height: 20px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--muted); flex-shrink: 0; }
-.audio-ch-num.playing { background: #34d399; color: #fff; }
+.audio-ch-num.playing { background: #2dd4bf; color: #fff; }
 .audio-ch-title { flex: 1; font-size: 12px; color: var(--text); }
 .audio-ch-dur { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); }
 
 /* Create home (used by create-flow.js internals) */
 .create-hero { max-width: 960px; margin: 0 auto; }
-.create-status { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: #34d399; font-size: 11px; font-weight: 600; margin-bottom: 16px; }
-.create-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: create-pulse 2s ease infinite; }
+.create-status { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.3); color: #2dd4bf; font-size: 11px; font-weight: 600; margin-bottom: 16px; }
+.create-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #2dd4bf; animation: create-pulse 2s ease infinite; }
 @keyframes create-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 .create-intel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
 .create-intel-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
@@ -380,7 +397,7 @@ a { text-decoration: none; color: inherit; }
 .create-modality-desc { font-size: 11px; color: var(--muted); margin-top: 4px; }
 .create-cta-row { display: flex; align-items: center; gap: 12px; }
 .create-flow-hint { font-size: 12px; color: var(--muted); }
-.create-audio-banner { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.25); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.create-audio-banner { background: rgba(45,212,191,0.08); border: 1px solid rgba(45,212,191,0.25); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 
 /* ============================================================
    SECTION TRANSITION SCREEN  —  prefix: tr-
@@ -476,7 +493,7 @@ a { text-decoration: none; color: inherit; }
   padding: 5px 14px;
   border-radius: 20px;
   background: var(--primary-dim);
-  border: 1px solid rgba(99,102,241,0.3);
+  border: 1px solid rgba(212,168,83,0.3);
   color: var(--primary-hover);
   font-size: 11px;
   font-weight: 600;
@@ -587,9 +604,9 @@ function screenTransition() {
   var badge   = t.nextBadge || '';
 
   var checkSvg = '<svg class="tr-check-svg" width="72" height="72" viewBox="0 0 64 64" fill="none">'
-    + '<circle class="tr-check-circle" cx="32" cy="32" r="29" stroke="#34d399" stroke-width="2"/>'
+    + '<circle class="tr-check-circle" cx="32" cy="32" r="29" stroke="#d4a853" stroke-width="2"/>'
     + '<path class="tr-check-path" d="M18 32 l10 10 l18-18"'
-    + ' stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
+    + ' stroke="#d4a853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
     + '</svg>';
 
   return '<div class="tr-screen" id="tr-screen">'
@@ -850,7 +867,8 @@ function init() {
   }
   /* Always boot to onboarding Screen 1 on fresh load */
   appState.mode = 'onboarding';
-  appState.onboarding = { step: 1, authMode: 'signup' };
+  appState.onboarding = { step: 1, authMode: 'signup', subStep: 1 };
+  appState.business   = { name: '', description: '', type: null };
   appState.strategyFlow = { screen: 'hub', marketScan: { step: 1, focus: '' }, customerIntel: { step: 1, focus: '' }, competition: { step: 1, focus: '' } };
   appState.strategy     = { marketScan: null, customerIntelligence: null, competition: null };
   appState.personaFlow  = { step: 1 };
@@ -860,11 +878,11 @@ function init() {
 window.addEventListener('load', init);
 
 </script>
-<script src="onboarding/onboarding.js?v=1"></script>
-<script src="studio-strategy/strategy-flow.js?v=1"></script>
-<script src="studio-persona/persona-flow.js?v=1"></script>
-<script src="studio-create/create-flow.js?v=11"></script>
-<script src="studio-campaign/campaign-flow.js?v=11"></script>
+<script src="onboarding/onboarding.js?v=3"></script>
+<script src="studio-strategy/strategy-flow.js?v=6"></script>
+<script src="studio-persona/persona-flow.js?v=2"></script>
+<script src="studio-create/create-flow.js?v=12"></script>
+<script src="studio-campaign/campaign-flow.js?v=12"></script>
 <script src="studio-text/studio-text.js?v=8"></script>
 <script src="studio-image/studio-image.js?v=7"></script>
 <script src="studio-video/studio-video.js?v=5"></script>

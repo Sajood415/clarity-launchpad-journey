@@ -427,3 +427,78 @@
   gap: 10px;
   margin-top: 36px;
 }
+
+/* ============================================================
+   WARM PALETTE OVERRIDES — Persona Studio + GTM
+   Applied on top of shared cf- classes to carry warm tone
+   ============================================================ */
+
+/* Reference card accent */
+.pf-ref-card {
+  background: rgba(255,255,255,0.03) !important;
+  border-color: var(--ob-border) !important;
+  border-left-color: var(--ob-gold) !important;
+}
+
+.pf-ref-label { color: var(--ob-gold) !important; opacity: 0.85; }
+.pf-ref-sep   { background: var(--ob-border) !important; }
+.pf-ref-value { color: var(--ob-text) !important; }
+
+/* Form fields */
+.pf-field label { color: var(--ob-muted) !important; }
+
+.pf-field input,
+.pf-field textarea {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: var(--ob-border) !important;
+  color: var(--ob-text) !important;
+}
+
+.pf-field input:focus,
+.pf-field textarea:focus {
+  border-color: var(--ob-gold-rim) !important;
+  box-shadow: 0 0 0 3px var(--ob-gold-dim) !important;
+}
+
+.pf-field input::placeholder,
+.pf-field textarea::placeholder { color: var(--ob-muted) !important; }
+
+.pf-field-hint { color: var(--ob-muted) !important; }
+
+/* Cares-about chips */
+.pf-care-chip {
+  background: rgba(255,255,255,0.03) !important;
+  border-color: var(--ob-border) !important;
+  color: var(--ob-muted) !important;
+}
+
+.pf-care-chip:hover {
+  border-color: var(--ob-gold-rim) !important;
+  color: var(--ob-text) !important;
+}
+
+.pf-care-chip.selected {
+  background: var(--ob-gold-dim) !important;
+  border-color: var(--ob-gold) !important;
+  color: var(--ob-gold) !important;
+  box-shadow: 0 0 0 2px var(--ob-gold-dim) !important;
+}
+
+/* Persona summary card */
+.pf-summary-card {
+  background: var(--ob-surface) !important;
+  border-color: var(--ob-border) !important;
+}
+
+.pf-summary-initials {
+  background: var(--ob-gold-dim) !important;
+  color: var(--ob-gold) !important;
+  border-color: var(--ob-gold-rim) !important;
+}
+
+/* GTM warm tones */
+.gtm-card-chip {
+  background: var(--ob-gold-dim) !important;
+  border-color: var(--ob-gold-rim) !important;
+  color: var(--ob-gold) !important;
+}

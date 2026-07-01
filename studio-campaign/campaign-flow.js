@@ -1661,7 +1661,7 @@ var CampaignFlow = (function () {
     var r = 38;
     var circ = 2 * Math.PI * r;
     var offset = circ * (1 - score / 100);
-    var color = score === 100 ? '#34d399' : score >= 75 ? '#f59e0b' : score >= 50 ? '#f97316' : '#ef4444';
+    var color = score === 100 ? '#d4a853' : score >= 75 ? '#f59e0b' : score >= 50 ? '#f97316' : '#ef4444';
     var trackColor = 'rgba(255,255,255,0.08)';
     return '<svg width="100" height="100" viewBox="0 0 100 100" style="display:block;">'
       + '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + trackColor + '" stroke-width="8"/>'

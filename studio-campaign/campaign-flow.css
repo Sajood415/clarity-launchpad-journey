@@ -56,16 +56,16 @@
 .cp-series-brief-nudge {
   display: flex; align-items: flex-start; gap: 7px;
   font-size: 11px; color: var(--muted); line-height: 1.5;
-  background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15);
+  background: rgba(212,168,83,0.06); border: 1px solid rgba(212,168,83,0.15);
   border-radius: var(--radius-sm); padding: 8px 10px;
 }
 .cp-series-nudge-ok {
-  background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.2); color: var(--text);
+  background: rgba(45,212,191,0.06); border-color: rgba(45,212,191,0.2); color: var(--text);
 }
 .cp-series-nudge-icon { flex-shrink: 0; font-size: 13px; line-height: 1.4; }
 .cp-series-default-badge {
   font-size: 10px; font-weight: 500; text-transform: none; letter-spacing: 0;
-  background: rgba(99,102,241,0.12); color: var(--primary);
+  background: rgba(212,168,83,0.12); color: var(--primary);
   border-radius: 999px; padding: 1px 7px; margin-left: 6px;
 }
 .cp-add-series-btn { margin-top: 4px; }
@@ -106,7 +106,7 @@
 
 /* ─── Series label in Publish rows ──────────────────────── */
 .cp-publish-series-tag {
-  font-size: 10px; font-weight: 600; background: rgba(99,102,241,0.12);
+  font-size: 10px; font-weight: 600; background: rgba(212,168,83,0.12);
   color: var(--primary); border-radius: 999px; padding: 1px 7px; margin-left: 8px;
   vertical-align: middle;
 }
@@ -167,12 +167,12 @@
 .cp-asset-thumb-image > * { width: 100% !important; height: 100% !important; }
 .cp-asset-thumb-img-grad {
   width: 100%; height: 100%;
-  background: linear-gradient(135deg, #1a1f35 0%, #2d1b4e 100%);
+  background: linear-gradient(135deg, #1c1916 0%, #231f1b 100%);
 }
 
 /* Video — full-width dark slab, play button centred */
 .cp-asset-thumb-video {
-  background: linear-gradient(145deg, #0a0e18 0%, #1a1040 100%);
+  background: linear-gradient(145deg, #12100e 0%, #1c1916 100%);
   display: flex; align-items: center; justify-content: center;
   position: relative; border: 1px solid var(--border); border-radius: var(--radius-sm);
 }
@@ -245,8 +245,8 @@
 .cp-publish-row[draggable="true"] { cursor: grab; }
 .cp-publish-row[draggable="true"]:active { cursor: grabbing; }
 .cp-publish-row.cp-drag-over {
-  border-color: var(--primary); background: var(--primary-dim, rgba(139,92,246,0.07));
-  box-shadow: 0 0 0 2px rgba(139,92,246,0.18);
+  border-color: var(--primary); background: var(--primary-dim, rgba(212,168,83,0.07));
+  box-shadow: 0 0 0 2px rgba(212,168,83,0.18);
 }
 .cp-drag-handle {
   display: flex; align-items: center; justify-content: center;
@@ -337,20 +337,20 @@
 /* Live campaign pulse indicator */
 .cp-live-dot {
   display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-  background: #34d399; flex-shrink: 0; vertical-align: middle; margin-right: 7px;
+  background: #2dd4bf; flex-shrink: 0; vertical-align: middle; margin-right: 7px;
   animation: cp-live-pulse 1.6s ease-in-out infinite;
 }
 @keyframes cp-live-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(52,211,153,0.55); }
-  50%       { opacity: 0.85; transform: scale(1.25); box-shadow: 0 0 0 5px rgba(52,211,153,0); }
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(45,212,191,0.55); }
+  50%       { opacity: 0.85; transform: scale(1.25); box-shadow: 0 0 0 5px rgba(45,212,191,0); }
 }
 .cp-live-stat {
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 9px;
-  font-size: 11px; color: #34d399; font-family: 'DM Mono', monospace;
+  font-size: 11px; color: #2dd4bf; font-family: 'DM Mono', monospace;
 }
 .cp-live-stat-inline {
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
-  font-size: 11px; color: #34d399; font-family: 'DM Mono', monospace;
+  font-size: 11px; color: #2dd4bf; font-family: 'DM Mono', monospace;
 }
 .cp-live-metric { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
 .cp-campaign-dates {
@@ -369,7 +369,7 @@
 .cp-health-body-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
 .cp-health-all-clear {
   display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
-  color: #34d399;
+  color: #2dd4bf;
 }
 .cp-health-failures {
   list-style: none; padding: 0; margin: 0;
@@ -417,8 +417,8 @@
 .clara-thinking {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 12px; color: var(--primary); margin-top: 4px;
-  padding: 7px 12px; background: var(--primary-dim, rgba(139,92,246,0.08));
-  border: 1px solid rgba(139,92,246,0.2); border-radius: 999px;
+  padding: 7px 12px; background: var(--primary-dim, rgba(212,168,83,0.08));
+  border: 1px solid rgba(212,168,83,0.2); border-radius: 999px;
   width: fit-content;
 }
 .clara-thinking-dot {
@@ -433,15 +433,15 @@
 .clara-ready {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 12px; color: var(--primary); margin-top: 4px;
-  padding: 7px 12px; background: var(--primary-dim, rgba(139,92,246,0.08));
-  border: 1px solid rgba(139,92,246,0.2); border-radius: 999px;
+  padding: 7px 12px; background: var(--primary-dim, rgba(212,168,83,0.08));
+  border: 1px solid rgba(212,168,83,0.2); border-radius: 999px;
   width: fit-content;
 }
 .clara-badge {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
-  color: var(--primary); background: var(--primary-dim, rgba(139,92,246,0.1));
-  border: 1px solid rgba(139,92,246,0.22); border-radius: 999px;
+  color: var(--primary); background: var(--primary-dim, rgba(212,168,83,0.1));
+  border: 1px solid rgba(212,168,83,0.22); border-radius: 999px;
   padding: 2px 8px; vertical-align: middle; margin-left: 6px;
   text-transform: none;
 }
